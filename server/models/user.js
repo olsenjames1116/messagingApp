@@ -14,3 +14,5 @@ const UserSchema = new Schema({
 	},
 	bio: { type: String, required: true },
 });
+
+module.exports = mongoose.model('User', UserSchema);
