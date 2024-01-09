@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { userImage } from '../../assets/images';
 
-function LogInPage() {
+function SignUpPage() {
 	useEffect(() => {
-		document.title = 'Log In';
+		document.title = 'Sign Up';
 	}, []);
 
 	const handleSubmit = (event) => {
@@ -15,14 +14,16 @@ function LogInPage() {
 			<div className="content">
 				<div className="title">App Title</div>
 				<div className="input">
-					<div className="banner">
-						<img src={userImage} />
-						<span>Welcome!</span>
-					</div>
+					<div className="banner">Create an Account</div>
 					<form method="POST" action="" onSubmit={handleSubmit}>
 						<input type="text" id="username" name="username" />
 						<input type="password" id="password" name="password" />
-						<button>Log In</button>
+						<input
+							type="password"
+							id="confirmPassword"
+							name="confirmPassword"
+						/>
+						<button>Sign Up</button>
 					</form>
 				</div>
 			</div>
@@ -30,4 +31,4 @@ function LogInPage() {
 	);
 }
 
-export default LogInPage;
+export default SignUpPage;
