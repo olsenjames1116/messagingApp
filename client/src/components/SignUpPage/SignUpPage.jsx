@@ -73,13 +73,11 @@ function SignUpPage() {
 							ref={confirmPassswordRef}
 							required
 						/>
-						{inputMessages && (
-							<ul className="inputMessages">
-								{inputMessages.map((message, index) => {
-									return <li key={index}>{message}</li>;
-								})}
-							</ul>
-						)}
+						<ul className="inputMessages">
+							{inputMessages.map((message, index) => {
+								return <li key={index}>{message}</li>;
+							})}
+						</ul>
 						<button>Sign Up</button>
 					</form>
 				</div>
