@@ -3,6 +3,9 @@ import InputMessages from '../InputMessages/InputMessages';
 
 function SignUpForm() {
 	const [inputMessages, setInputMessages] = useState([]);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -28,14 +31,36 @@ function SignUpForm() {
 		}
 	};
 
+	const signUp = async () => {
+		console.log(username, password, confirmPassword);
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
 
 		if (event.target.checkValidity()) {
-			console.log('success');
+			signUp();
 		} else {
 			handleInputError();
+		}
+	};
+
+	const handleChange = ({ target }) => {
+		const { id, value } = target;
+
+		switch (id) {
+			case 'username':
+				setUsername(value);
+				break;
+			case 'password':
+				setPassword(value);
+				break;
+			case 'confirmPassword':
+				setConfirmPassword(value);
+				break;
+			default:
+				console.log('None of the ids matched.');
 		}
 	};
 
@@ -48,6 +73,7 @@ function SignUpForm() {
 				placeholder="username"
 				ref={usernameRef}
 				required
+				onChange={handleChange}
 			/>
 			<input
 				type="password"
@@ -56,6 +82,7 @@ function SignUpForm() {
 				placeholder="password"
 				ref={passwordRef}
 				required
+				onChange={handleChange}
 			/>
 			<input
 				type="password"
@@ -64,6 +91,7 @@ function SignUpForm() {
 				placeholder="confirm password"
 				ref={confirmPassswordRef}
 				required
+				onChange={handleChange}
 			/>
 			<InputMessages messages={inputMessages} />
 			<button>Sign Up</button>
