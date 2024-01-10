@@ -20,8 +20,18 @@ function LogInPage() {
 						<span>Welcome!</span>
 					</div>
 					<form method="POST" action="" onSubmit={handleSubmit}>
-						<input type="text" id="username" name="username" />
-						<input type="password" id="password" name="password" />
+						<input
+							type="text"
+							id="username"
+							name="username"
+							placeholder="username"
+						/>
+						<input
+							type="password"
+							id="password"
+							name="password"
+							placeholder="password"
+						/>
 						<button>Log In</button>
 					</form>
 				</div>
