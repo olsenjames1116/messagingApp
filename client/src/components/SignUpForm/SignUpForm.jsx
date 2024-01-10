@@ -4,6 +4,7 @@ import api from '../../axiosConfig';
 import './SignUpForm.module.css';
 import { useNavigate } from 'react-router-dom';
 
+// Represents the sign up form on the sign up page.
 function SignUpForm() {
 	const [inputMessages, setInputMessages] = useState([]);
 	const [username, setUsername] = useState('');
@@ -17,7 +18,61 @@ function SignUpForm() {
 
 	const navigate = useNavigate();
 
+	// Reached if backend validation was successful.
+	const handleSuccess = (response) => {
+		// Style inputs and message from backend to appear as valid.
+		const inputRefs = [usernameRef, passwordRef, confirmPasswordRef];
+		inputRefs.map(
+			(inputRef) => (inputRef.current.style.backgroundColor = 'white')
+		);
+		inputMessagesRef.current.style.color = 'black';
+
+		// Display message from backend.
+		setInputMessages([response.data.message]);
+
+		// Redirect the user to log in with their new account.
+		setTimeout(() => {
+			navigate('/log-in');
+		}, 3000);
+	};
+
+	// Send input to the backend for validation.
+	const signUp = async () => {
+		try {
+			const response = await api.post('/user/sign-up', {
+				username: username,
+				password: password,
+				confirmPassword: confirmPassword,
+			});
+
+			// This is reached if all input is valid.
+			handleSuccess(response);
+		} catch (err) {
+			// Anything here is due to an error.
+			if (err.response.status === 400) {
+				// A 400 error code is sent from the backend if data from the request was invalid.
+				const { message } = err.response.data;
+				// Style message from backend to appear as invalid.
+				inputMessagesRef.current.style.color = 'red';
+				// Display message from backend.
+				setInputMessages([...message]);
+			} else {
+				// This is a catch all for everything that is not invalid data.
+				console.log(err);
+			}
+		}
+	};
+
+	// Clear all input in the form.
+	const clearInput = () => {
+		usernameRef.current.value = '';
+		passwordRef.current.value = '';
+		confirmPasswordRef.current.value = '';
+	};
+
+	// Reached when there is an error detected from front end validation.
 	const handleInputError = () => {
+		// Each check will determine what caused the error and display the appropriate error message for clarity.
 		if (!usernameRef.current.checkValidity()) {
 			usernameRef.current.validity.valueMissing &&
 				setInputMessages((state) => [...state, 'Username must not be empty.']);
@@ -37,39 +92,7 @@ function SignUpForm() {
 		}
 	};
 
-	const signUp = async () => {
-		try {
-			const response = await api.post('/user/sign-up', {
-				username: username,
-				password: password,
-				confirmPassword: confirmPassword,
-			});
-			const inputRefs = [usernameRef, passwordRef, confirmPasswordRef];
-			inputRefs.map(
-				(inputRef) => (inputRef.current.style.backgroundColor = 'white')
-			);
-			inputMessagesRef.current.style.color = 'black';
-			setInputMessages([response.data.message]);
-			setTimeout(() => {
-				navigate('/log-in');
-			}, 3000);
-		} catch (err) {
-			if (err.response.status === 400) {
-				const { message } = err.response.data;
-				inputMessagesRef.current.style.color = 'red';
-				setInputMessages([...message]);
-			} else {
-				console.log(err);
-			}
-		}
-	};
-
-	const clearInput = () => {
-		usernameRef.current.value = '';
-		passwordRef.current.value = '';
-		confirmPasswordRef.current.value = '';
-	};
-
+	// Reached when the form has been submitted.
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
@@ -83,9 +106,11 @@ function SignUpForm() {
 		}
 	};
 
+	// Reached when a change has been made to an input field.
 	const handleChange = ({ target }) => {
 		const { id, value } = target;
 
+		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'username':
 				setUsername(value);
