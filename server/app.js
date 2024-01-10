@@ -3,11 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+require('dotenv').config();
+const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 
 var app = express();
 
+// Set up mongoose connection.
+mongoose.set('strictQuery', false);
+
+const mongoDB = process.env.PRODDB_URI || process.env.DEVDB_URI;
+main().catch((err) => {
+	console.log(err);
+});
+async function main() {
+	await mongoose.connect(mongoDB);
+}
+
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
