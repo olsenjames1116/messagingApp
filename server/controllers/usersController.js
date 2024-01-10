@@ -26,3 +26,30 @@ exports.validateUserCreate = [
 		})
 		.withMessage('Passwords must match.'),
 ];
+
+// Creates a user to be stored in the db.
+exports.userCreatePost =
+	// Process request after validation and sanitization.
+	asyncHandler(async (req, res, next) => {
+		// Extract the validation errors from the request.
+		const errors = validationResult(req);
+
+		// Create a User object with escaped and trimmed data.
+		const { username, password } = req.body;
+		const user = new User({
+			username: username,
+			password: password,
+		});
+
+		if (!errors.isEmpty()) {
+			// There are errors. Render form again with sanitized values/error messages.
+			return res.status(400).json({
+				message: errors.array(),
+			});
+		} else {
+			res.status(201).json({
+				message:
+					'Your account has been created. You will be redirected to log in.',
+			});
+		}
+	});
