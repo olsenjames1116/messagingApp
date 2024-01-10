@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
+// import { useNavigate } from 'react-router-dom';
+import api from '../../axiosConfig';
 
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
@@ -8,6 +10,26 @@ function LogInForm() {
 
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
+	const inputMessagesRef = useRef(null);
+
+	// const navigate = useNavigate();
+
+	const logIn = async () => {
+		try {
+			const response = await api.post('/user/log-in', {
+				username: username,
+				password: password,
+			});
+			console.log(response);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const clearInput = () => {
+		usernameRef.current.value = '';
+		passwordRef.current.value = '';
+	};
 
 	const handleInputError = () => {
 		if (!usernameRef.current.checkValidity()) {
@@ -19,15 +41,6 @@ function LogInForm() {
 			passwordRef.current.validity.valueMissing &&
 				setInputMessages((state) => [...state, 'Password must not be empty.']);
 		}
-	};
-
-	const logIn = async () => {
-		console.log(username, password);
-	};
-
-	const clearInput = () => {
-		usernameRef.current.value = '';
-		passwordRef.current.value = '';
 	};
 
 	const handleSubmit = (event) => {
@@ -77,7 +90,10 @@ function LogInForm() {
 				ref={passwordRef}
 				onChange={handleChange}
 			/>
-			<InputMessages messages={inputMessages} />
+			<InputMessages
+				messages={inputMessages}
+				inputMessagesRef={inputMessagesRef}
+			/>
 			<button>Log In</button>
 		</form>
 	);
