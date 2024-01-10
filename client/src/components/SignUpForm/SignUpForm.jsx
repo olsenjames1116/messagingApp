@@ -1,5 +1,8 @@
 import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
+import api from '../../axiosConfig';
+import './SignUpForm.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function SignUpForm() {
 	const [inputMessages, setInputMessages] = useState([]);
@@ -9,7 +12,10 @@ function SignUpForm() {
 
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
-	const confirmPassswordRef = useRef(null);
+	const confirmPasswordRef = useRef(null);
+	const inputMessagesRef = useRef(null);
+
+	const navigate = useNavigate();
 
 	const handleInputError = () => {
 		if (!usernameRef.current.checkValidity()) {
@@ -22,8 +28,8 @@ function SignUpForm() {
 				setInputMessages((state) => [...state, 'Password must not be empty.']);
 		}
 
-		if (!confirmPassswordRef.current.checkValidity()) {
-			confirmPassswordRef.current.validity.valueMissing &&
+		if (!confirmPasswordRef.current.checkValidity()) {
+			confirmPasswordRef.current.validity.valueMissing &&
 				setInputMessages((state) => [
 					...state,
 					'Confirmation password must not be empty.',
@@ -32,13 +38,36 @@ function SignUpForm() {
 	};
 
 	const signUp = async () => {
-		console.log(username, password, confirmPassword);
+		try {
+			const response = await api.post('/user/sign-up', {
+				username: username,
+				password: password,
+				confirmPassword: confirmPassword,
+			});
+			const inputRefs = [usernameRef, passwordRef, confirmPasswordRef];
+			inputRefs.map(
+				(inputRef) => (inputRef.current.style.backgroundColor = 'white')
+			);
+			inputMessagesRef.current.style.color = 'black';
+			setInputMessages([response.data.message]);
+			setTimeout(() => {
+				navigate('/log-in');
+			}, 3000);
+		} catch (err) {
+			if (err.response.status === 400) {
+				const { message } = err.response.data;
+				inputMessagesRef.current.style.color = 'red';
+				setInputMessages([...message]);
+			} else {
+				console.log(err);
+			}
+		}
 	};
 
 	const clearInput = () => {
 		usernameRef.current.value = '';
 		passwordRef.current.value = '';
-		confirmPassswordRef.current.value = '';
+		confirmPasswordRef.current.value = '';
 	};
 
 	const handleSubmit = (event) => {
@@ -49,6 +78,7 @@ function SignUpForm() {
 			signUp();
 			clearInput();
 		} else {
+			inputMessagesRef.current.style.color = 'red';
 			handleInputError();
 		}
 	};
@@ -96,11 +126,14 @@ function SignUpForm() {
 				id="confirmPassword"
 				name="confirmPassword"
 				placeholder="confirm password"
-				ref={confirmPassswordRef}
+				ref={confirmPasswordRef}
 				required
 				onChange={handleChange}
 			/>
-			<InputMessages messages={inputMessages} />
+			<InputMessages
+				messages={inputMessages}
+				inputMessagesRef={inputMessagesRef}
+			/>
 			<button>Sign Up</button>
 		</form>
 	);

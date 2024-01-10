@@ -43,8 +43,10 @@ exports.userCreatePost =
 
 		if (!errors.isEmpty()) {
 			// There are errors. Render form again with sanitized values/error messages.
+			const errorMessages = errors.array().map((error) => error.msg);
+
 			return res.status(400).json({
-				message: errors.array(),
+				message: errorMessages,
 			});
 		} else {
 			res.status(201).json({

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
-function InputMessages({ messages }) {
+function InputMessages({ messages, inputMessagesRef }) {
 	return (
-		<ul className="inputMessages">
+		<ul className="inputMessages" ref={inputMessagesRef}>
 			{messages.map((message, index) => {
 				return <li key={index}>{message}</li>;
 			})}
@@ -12,6 +12,7 @@ function InputMessages({ messages }) {
 
 InputMessages.propTypes = {
 	messages: PropTypes.array,
+	inputMessagesRef: PropTypes.object,
 };
 
 export default InputMessages;
