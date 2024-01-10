@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
 import api from '../../axiosConfig';
-import './SignUpForm.module.css';
 import { useNavigate } from 'react-router-dom';
 
 // Represents the sign up form on the sign up page.
@@ -20,11 +19,7 @@ function SignUpForm() {
 
 	// Reached if backend validation was successful.
 	const handleSuccess = (response) => {
-		// Style inputs and message from backend to appear as valid.
-		const inputRefs = [usernameRef, passwordRef, confirmPasswordRef];
-		inputRefs.map(
-			(inputRef) => (inputRef.current.style.backgroundColor = 'white')
-		);
+		// Style message from backend to appear as valid.
 		inputMessagesRef.current.style.color = 'black';
 
 		// Display message from backend.
