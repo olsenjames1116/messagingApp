@@ -3,6 +3,8 @@ import InputMessages from '../InputMessages/InputMessages';
 
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -19,14 +21,39 @@ function LogInForm() {
 		}
 	};
 
+	const logIn = async () => {
+		console.log(username, password);
+	};
+
+	const clearInput = () => {
+		usernameRef.current.value = '';
+		passwordRef.current.value = '';
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
 
 		if (event.target.checkValidity()) {
-			console.log('success');
+			logIn();
+			clearInput();
 		} else {
 			handleInputError();
+		}
+	};
+
+	const handleChange = ({ target }) => {
+		const { id, value } = target;
+
+		switch (id) {
+			case 'username':
+				setUsername(value);
+				break;
+			case 'password':
+				setPassword(value);
+				break;
+			default:
+				console.log('None of the ids matched.');
 		}
 	};
 
@@ -39,6 +66,7 @@ function LogInForm() {
 				placeholder="username"
 				required
 				ref={usernameRef}
+				onChange={handleChange}
 			/>
 			<input
 				type="password"
@@ -47,6 +75,7 @@ function LogInForm() {
 				placeholder="password"
 				required
 				ref={passwordRef}
+				onChange={handleChange}
 			/>
 			<InputMessages messages={inputMessages} />
 			<button>Log In</button>
