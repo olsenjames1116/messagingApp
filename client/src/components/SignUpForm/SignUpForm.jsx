@@ -35,12 +35,19 @@ function SignUpForm() {
 		console.log(username, password, confirmPassword);
 	};
 
+	const clearInput = () => {
+		usernameRef.current.value = '';
+		passwordRef.current.value = '';
+		confirmPassswordRef.current.value = '';
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
 
 		if (event.target.checkValidity()) {
 			signUp();
+			clearInput();
 		} else {
 			handleInputError();
 		}
