@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import InputMessages from '../InputMessages/InputMessages';
 
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
@@ -47,11 +48,7 @@ function LogInForm() {
 				required
 				ref={passwordRef}
 			/>
-			<ul className="inputMessages">
-				{inputMessages.map((message, index) => {
-					return <li key={index}>{message}</li>;
-				})}
-			</ul>
+			<InputMessages messages={inputMessages} />
 			<button>Log In</button>
 		</form>
 	);

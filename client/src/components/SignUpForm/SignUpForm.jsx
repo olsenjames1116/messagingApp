@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import InputMessages from '../InputMessages/InputMessages';
 
 function SignUpForm() {
 	const [inputMessages, setInputMessages] = useState([]);
@@ -64,11 +65,7 @@ function SignUpForm() {
 				ref={confirmPassswordRef}
 				required
 			/>
-			<ul className="inputMessages">
-				{inputMessages.map((message, index) => {
-					return <li key={index}>{message}</li>;
-				})}
-			</ul>
+			<InputMessages messages={inputMessages} />
 			<button>Sign Up</button>
 		</form>
 	);
