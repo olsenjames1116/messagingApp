@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
+import Header from '../Header/Header';
 
 function HomePage() {
 	const navigate = useNavigate();
@@ -24,9 +25,12 @@ function HomePage() {
 	}, []);
 
 	return (
-		<main>
-			<div className="content">Home Page</div>
-		</main>
+		<>
+			<Header />
+			<main>
+				<div className="content">Home Page</div>
+			</main>
+		</>
 	);
 }
 
