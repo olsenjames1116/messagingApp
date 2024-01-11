@@ -1,14 +1,22 @@
 const User = require('../models/user');
+const Image = require('../models/image');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
 
+let client;
+
 if (process.env.MODE === 'production') {
 } else {
-	const client = redis.createClient();
+	client = redis.createClient();
 }
+client
+	.on('connect', function () {
+		console.log('Connected');
+	})
+	.on('error', (err) => console.log('Redis Client Error', err));
 
 // Validate and sanitize fields to create user on sign up.
 exports.validateUserSignUp = [
@@ -100,7 +108,9 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 	} else {
 		// There are no validation errors. Further check user credentials before logging in.
 		const { username, password } = req.body;
-		const user = await User.findOne({ username: username });
+		const user = await User.findOne({ username: username })
+			.populate('profilePic')
+			.exec();
 		if (!user) {
 			// User does not exist in database.
 			return res.status(401).json({
@@ -130,9 +140,18 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		);
 
 		// Store the tokens in Redis.
+		client.connect();
+
 		await client.set('accessToken', accessToken);
 		await client.set('refreshToken', refreshToken);
 
-		res.sendStatus(200);
+		client.disconnect();
+
+		// Return user info.
+		res.status(200).json({
+			username: user.username,
+			profilePic: user.profilePic.data,
+			bio: user.bio,
+		});
 	}
 });

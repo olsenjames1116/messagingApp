@@ -5,8 +5,8 @@ import api from '../../axiosConfig';
 
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+	const [usernameInput, setUsernameInput] = useState('');
+	const [passwordInput, setPasswordInput] = useState('');
 
 	const usernameRef = useRef(null);
 	const passwordRef = useRef(null);
@@ -18,11 +18,16 @@ function LogInForm() {
 	const logIn = async () => {
 		try {
 			const response = await api.post('/user/log-in', {
-				username: username,
-				password: password,
+				username: usernameInput,
+				password: passwordInput,
 			});
 			// Anything below here is reached if input is valid.
-			console.log(response);
+
+			// Retrieve and store user information.
+			const { username, bio, profilePic } = response.data;
+			localStorage.setItem('username', username);
+			localStorage.setItem('bio', bio);
+			localStorage.setItem('profilePic', profilePic);
 		} catch (err) {
 			// Anything here is due to an error.
 			if (err.response.status === 400 || err.response.status === 401) {
@@ -70,6 +75,7 @@ function LogInForm() {
 			logIn();
 			clearInput();
 		} else {
+			inputMessagesRef.current.style.color = 'red';
 			handleInputError();
 		}
 	};
@@ -81,10 +87,10 @@ function LogInForm() {
 		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'username':
-				setUsername(value);
+				setUsernameInput(value);
 				break;
 			case 'password':
-				setPassword(value);
+				setPasswordInput(value);
 				break;
 			default:
 				console.log('None of the ids matched.');
