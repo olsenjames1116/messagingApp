@@ -9,6 +9,7 @@ const redis = require('redis');
 let client;
 
 if (process.env.MODE === 'production') {
+	client = redis.createClient({ url: process.env.REDIS_URL });
 } else {
 	client = redis.createClient();
 }
@@ -154,4 +155,17 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 			bio: user.bio,
 		});
 	}
+});
+
+exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
+	client.connect();
+	const accessToken = await client.get('accessToken');
+	client.disconnect();
+
+	jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+		if (err) return res.status(403).send('Could not verify access token');
+
+		req.user = user;
+		next();
+	});
 });

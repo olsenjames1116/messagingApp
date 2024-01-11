@@ -17,4 +17,7 @@ router.post(
 	usersController.userLogInPost
 );
 
+// GET the path to verify a user's access token.
+router.get('/verifyToken', usersController.userVerifyTokenGet);
+
 module.exports = router;

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 
 function LogInForm() {
@@ -12,7 +12,19 @@ function LogInForm() {
 	const passwordRef = useRef(null);
 	const inputMessagesRef = useRef(null);
 
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
+
+	// Reached from a successful log in.
+	const handleSuccess = (response) => {
+		// Store user information returned from backend.
+		const { username, bio, profilePic } = response.data;
+		localStorage.setItem('username', username);
+		localStorage.setItem('bio', bio);
+		localStorage.setItem('profilePic', profilePic);
+
+		// Navigate user to their home page.
+		navigate('/');
+	};
 
 	// Send input to backend for validation.
 	const logIn = async () => {
@@ -22,12 +34,7 @@ function LogInForm() {
 				password: passwordInput,
 			});
 			// Anything below here is reached if input is valid.
-
-			// Retrieve and store user information.
-			const { username, bio, profilePic } = response.data;
-			localStorage.setItem('username', username);
-			localStorage.setItem('bio', bio);
-			localStorage.setItem('profilePic', profilePic);
+			handleSuccess(response);
 		} catch (err) {
 			// Anything here is due to an error.
 			if (err.response.status === 400 || err.response.status === 401) {
