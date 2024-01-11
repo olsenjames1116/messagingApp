@@ -3,6 +3,7 @@ import Logo from '../Logo/Logo';
 import User from '../User/User';
 import UserDropDown from '../UserDropDown/UserDropDown';
 
+// Represents the header at the top of the page.
 function Header() {
 	const [displayDropDown, setDisplayDropDown] = useState(false);
 

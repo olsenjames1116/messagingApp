@@ -93,9 +93,11 @@ function SignUpForm() {
 		setInputMessages([]);
 
 		if (event.target.checkValidity()) {
+			// If input is valid, the below will executed.
 			signUp();
 			clearInput();
 		} else {
+			// If input is invalid, the below will be executed.
 			inputMessagesRef.current.style.color = 'red';
 			handleInputError();
 		}

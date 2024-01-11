@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+// Represents the messages that displayed on forms after input is validated.
 function InputMessages({ messages, inputMessagesRef }) {
 	return (
 		<ul className="inputMessages" ref={inputMessagesRef}>

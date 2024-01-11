@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
+// Represents the user info displayed in the header.
 function User({ setDisplayDropDown }) {
 	const user = useSelector((state) => state.user);
 
+	// Reached when the component is clicked.
 	const handleClick = () => {
+		// Displays a dropdown menu.
 		setDisplayDropDown(true);
 	};
 

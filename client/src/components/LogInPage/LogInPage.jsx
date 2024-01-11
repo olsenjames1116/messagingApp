@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { userImage } from '../../assets/images';
 import LogInForm from '../LogInForm/LogInForm';
 
+// Represents the log in page.
 function LogInPage() {
 	useEffect(() => {
 		document.title = 'Log In';

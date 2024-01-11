@@ -5,6 +5,7 @@ import api from '../../axiosConfig';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../../redux/state/userSlice';
 
+// Represents the form displayed on the log in page.
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
 	const [usernameInput, setUsernameInput] = useState('');
@@ -26,6 +27,7 @@ function LogInForm() {
 		localStorage.setItem('bio', bio);
 		localStorage.setItem('profilePic', profilePic);
 
+		// Store the user information in state.
 		dispatch(addUser({ username: username, bio: bio, profilePic: profilePic }));
 
 		// Navigate user to their home page.
