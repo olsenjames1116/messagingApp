@@ -27,10 +27,9 @@ api.interceptors.response.use(
 		if (error.response.status === 403 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
-				const response = await api.post('/user/refreshTokens', {
+				await api.post('/user/refreshTokens', {
 					username: localStorage.getItem('username'),
 				});
-				console.log(response);
 
 				return await api.get(originalRequest.url);
 			} catch (err) {

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LogOut from '../Logout/LogOut';
+import { Link } from 'react-router-dom';
 
 // Represents the dropdown menu that displays under the user info in the header.
 function UserDropDown({ displayDropDown, setDisplayDropDown, dropDownRef }) {
@@ -16,6 +17,7 @@ function UserDropDown({ displayDropDown, setDisplayDropDown, dropDownRef }) {
 
 	return (
 		<div ref={dropDownRef}>
+			<Link to="/edit-user">Edit Profile</Link>
 			<LogOut />
 		</div>
 	);
