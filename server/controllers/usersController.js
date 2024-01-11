@@ -174,3 +174,12 @@ exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
 		next();
 	});
 });
+
+// Removes a user's access on log out.
+exports.userLogOutGet = asyncHandler(async (req, res, next) => {
+	// Access is removed by deleting their tokens.
+	await client.del('accessToken');
+	await client.del('refreshToken');
+
+	res.status(200).send('Successfully removed user access.');
+});
