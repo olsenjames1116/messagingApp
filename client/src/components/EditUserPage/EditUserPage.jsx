@@ -1,4 +1,5 @@
 import Header from '../Header/Header';
+import EditUserForm from '../EditUserForm/EditUserForm';
 
 // Represents the page on which the user can edit their profile.
 function EditUserPage() {
@@ -6,7 +7,9 @@ function EditUserPage() {
 		<>
 			<Header />
 			<main>
-				<div className="content">Edit User</div>
+				<div className="content">
+					<EditUserForm />
+				</div>
 			</main>
 		</>
 	);
