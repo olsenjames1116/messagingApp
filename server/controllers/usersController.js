@@ -15,9 +15,10 @@ if (process.env.MODE === 'production') {
 }
 client
 	.on('connect', function () {
-		console.log('Connected');
+		console.log('Connected to Redis');
 	})
-	.on('error', (err) => console.log('Redis Client Error', err));
+	.on('error', (err) => console.log('Redis Client Error', err))
+	.connect();
 
 // Validate and sanitize fields to create user on sign up.
 exports.validateUserSignUp = [
@@ -141,12 +142,12 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		);
 
 		// Store the tokens in Redis.
-		client.connect();
+		// client.connect();
 
 		await client.set('accessToken', accessToken);
 		await client.set('refreshToken', refreshToken);
 
-		client.disconnect();
+		// client.disconnect();
 
 		// Return user info.
 		res.status(200).json({
@@ -158,9 +159,9 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 });
 
 exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
-	client.connect();
+	// client.connect();
 	const accessToken = await client.get('accessToken');
-	client.disconnect();
+	// client.disconnect();
 
 	jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 		if (err) return res.status(403).send('Could not verify access token');

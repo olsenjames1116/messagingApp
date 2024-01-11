@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
 import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../../redux/state/userSlice';
 
 function LogInForm() {
 	const [inputMessages, setInputMessages] = useState([]);
@@ -14,6 +16,8 @@ function LogInForm() {
 
 	const navigate = useNavigate();
 
+	const dispatch = useDispatch();
+
 	// Reached from a successful log in.
 	const handleSuccess = (response) => {
 		// Store user information returned from backend.
@@ -21,6 +25,8 @@ function LogInForm() {
 		localStorage.setItem('username', username);
 		localStorage.setItem('bio', bio);
 		localStorage.setItem('profilePic', profilePic);
+
+		dispatch(addUser({ username: username, bio: bio, profilePic: profilePic }));
 
 		// Navigate user to their home page.
 		navigate('/');
