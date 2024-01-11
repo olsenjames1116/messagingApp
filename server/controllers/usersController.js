@@ -139,7 +139,8 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		// Create an access token for the user.
 		const accessToken = jwt.sign(
 			user.toJSON(),
-			process.env.ACCESS_TOKEN_SECRET
+			process.env.ACCESS_TOKEN_SECRET,
+			{ expiresIn: 10 }
 		);
 		// Create a refresh token for the user.
 		const refreshToken = jwt.sign(
@@ -173,6 +174,11 @@ exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
 		req.user = user;
 		next();
 	});
+});
+
+exports.userRefreshTokensPost = asyncHandler(async (req, res, next) => {
+	const { username } = req.body;
+	console.log(username);
 });
 
 // Removes a user's access on log out.
