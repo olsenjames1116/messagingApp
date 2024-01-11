@@ -89,5 +89,12 @@ exports.validateUserLogIn = [
 		.trim()
 		.escape()
 		.notEmpty()
-		.withMessage('Password must not be empty.'),
+		.withMessage('Password must not be empty.')
+		.custom(async (password) => {
+			const user = await User.findOne({ username: username });
+			const match = await bcrypt.compare(password, user.password);
+			if (!match) {
+				throw new Error('Invalid username or password.');
+			}
+		}),
 ];
