@@ -6,13 +6,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
 
+// Set up connection to Redis.
 let client;
 
+// This conditional allows for connection to a production build of Redis.
 if (process.env.MODE === 'production') {
 	client = redis.createClient({ url: process.env.REDIS_URL });
 } else {
+	// Reached if the build is still in development.
 	client = redis.createClient();
 }
+// Display meaningful messages to the console and connect to Redis.
 client
 	.on('connect', function () {
 		console.log('Connected to Redis');
@@ -30,6 +34,7 @@ exports.validateUserSignUp = [
 		.custom(async (username) => {
 			const user = await User.findOne({ username: username });
 			if (user) {
+				// If a user is found in the db, the username already exists.
 				throw new Error('Username is already in use.');
 			}
 		}),
@@ -40,6 +45,7 @@ exports.validateUserSignUp = [
 		.notEmpty()
 		.withMessage('Confirmation must not be empty.')
 		.custom((confirmPassword, { req }) => {
+			// If the passwords do not match, there is an error.
 			return confirmPassword === req.body.password;
 		})
 		.withMessage('Passwords must match.'),
@@ -142,12 +148,8 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		);
 
 		// Store the tokens in Redis.
-		// client.connect();
-
 		await client.set('accessToken', accessToken);
 		await client.set('refreshToken', refreshToken);
-
-		// client.disconnect();
 
 		// Return user info.
 		res.status(200).json({
@@ -158,14 +160,16 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 	}
 });
 
+// Verify a user's access token.
 exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
-	// client.connect();
+	// Retrieve the access token from Redis.
 	const accessToken = await client.get('accessToken');
-	// client.disconnect();
 
 	jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+		// The conditional below forbids access if the token is invalid.
 		if (err) return res.status(403).send('Could not verify access token');
 
+		// Reached if the access token is valid.
 		req.user = user;
 		next();
 	});
