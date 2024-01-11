@@ -7,10 +7,14 @@ const usersController = require('../controllers/usersController');
 router.post(
 	'/sign-up',
 	usersController.validateUserSignUp,
-	usersController.userCreatePost
+	usersController.userSignUpPost
 );
 
 // POST a user's credentials when they log in.
-router.post('/log-in', usersController.validateUserLogIn);
+router.post(
+	'/log-in',
+	usersController.validateUserLogIn,
+	usersController.userLogInPost
+);
 
 module.exports = router;

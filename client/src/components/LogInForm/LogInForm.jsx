@@ -22,7 +22,15 @@ function LogInForm() {
 			});
 			console.log(response);
 		} catch (err) {
-			console.log(err);
+			if (err.response.status === 400 || err.response.status === 401) {
+				const { message } = err.response.data;
+				inputMessagesRef.current.style.color = 'red';
+				err.response.status === 400
+					? setInputMessages([...message])
+					: setInputMessages([message]);
+			} else {
+				console.log(err);
+			}
 		}
 	};
 

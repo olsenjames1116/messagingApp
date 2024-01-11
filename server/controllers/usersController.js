@@ -42,7 +42,7 @@ const storeUser = (user) => {
 };
 
 // Creates a user to be stored in the db.
-exports.userCreatePost =
+exports.userSignUpPost =
 	// Process request after validation and sanitization.
 	asyncHandler(async (req, res, next) => {
 		// Extract the validation errors from the request.
@@ -56,7 +56,7 @@ exports.userCreatePost =
 		});
 
 		if (!errors.isEmpty()) {
-			// There are errors. Render form again with sanitized values/error messages.
+			// There are errors. Render form again with error messages.
 			const errorMessages = errors.array().map((error) => error.msg);
 
 			return res.status(400).json({
@@ -74,27 +74,39 @@ exports.userCreatePost =
 
 // Validate and sanitize data from user on log in.
 exports.validateUserLogIn = [
-	body('username')
-		.trim()
-		.escape()
-		.notEmpty()
-		.withMessage('Username must not be empty.')
-		.custom(async (username) => {
-			const user = await User.findOne({ username: username });
-			if (!user) {
-				throw new Error('Username does not exist.');
-			}
-		}),
-	body('password')
-		.trim()
-		.escape()
-		.notEmpty()
-		.withMessage('Password must not be empty.')
-		.custom(async (password) => {
-			const user = await User.findOne({ username: username });
-			const match = await bcrypt.compare(password, user.password);
-			if (!match) {
-				throw new Error('Invalid username or password.');
-			}
-		}),
+	body('username', 'Username must not be empty.').trim().escape().notEmpty(),
+	body('password', 'Password must not be empty.').trim().escape().notEmpty(),
 ];
+
+exports.userLogInPost = asyncHandler(async (req, res, next) => {
+	// Extract the validation errors from the request.
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		// There are errors. Render form again with error messages.
+		const errorMessages = errors.array().map((error) => error.msg);
+
+		return res.status(400).json({
+			message: errorMessages,
+		});
+	} else {
+		const { username, password } = req.body;
+		const user = await User.findOne({ username: username });
+		if (!user) {
+			return res.status(401).json({
+				message: 'Username does not exist.',
+			});
+		}
+
+		const match = await bcrypt.compare(password, user.password);
+		if (!match) {
+			return res.status(401).json({
+				message: 'Invalid password.',
+			});
+		}
+
+		res.status(200).json({
+			message: 'Successful log in.',
+		});
+	}
+});
