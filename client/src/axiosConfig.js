@@ -19,9 +19,9 @@ api.interceptors.response.use(
 			localStorage.removeItem('bio');
 			localStorage.removeItem('profilePic');
 
-			document.location.href = '/log-in';
+			await api.get('/user/log-out');
 
-			return await api.get('/user/log-out');
+			return (document.location.href = '/log-in');
 		}
 
 		if (error.response.status === 403 && !originalRequest._retry) {
@@ -34,7 +34,8 @@ api.interceptors.response.use(
 
 				return await api.get(originalRequest.url);
 			} catch (err) {
-				return await api.get('/user/log-out');
+				await api.get('/user/log-out');
+				return (document.location.href = '/log-in');
 			}
 		}
 		Promise.reject(error);

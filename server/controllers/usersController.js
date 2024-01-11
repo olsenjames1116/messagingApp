@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
+const { request } = require('express');
 
 // Set up connection to Redis.
 let client;
@@ -140,12 +141,13 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		const accessToken = jwt.sign(
 			user.toJSON(),
 			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: 10 }
+			{ expiresIn: '2m' }
 		);
 		// Create a refresh token for the user.
 		const refreshToken = jwt.sign(
 			user.toJSON(),
-			process.env.REFRESH_TOKEN_SECRET
+			process.env.REFRESH_TOKEN_SECRET,
+			{ expiresIn: '10m' }
 		);
 
 		// Store the tokens in Redis.
@@ -176,9 +178,53 @@ exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
 	});
 });
 
+// Verify a user's refresh token.
+const verifyRefresh = (username, refreshToken) => {
+	try {
+		const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+		/* If the decoded user associated with the token is equal to the user passed along
+		from the request, the token is validationResult. */
+		return decoded.username === username;
+	} catch (err) {
+		// A catch all for errors to invalidate the refresh token.
+		return false;
+	}
+};
+
+// Assign new tokens to user if access token has expired.
 exports.userRefreshTokensPost = asyncHandler(async (req, res, next) => {
 	const { username } = req.body;
-	console.log(username);
+	const refreshToken = await client.get('refreshToken');
+
+	const refreshIsValid = verifyRefresh(username, refreshToken);
+	if (!refreshIsValid) {
+		// The refresh token is invalid. Deny access.
+		return res.status(403).send('Refresh token is not valid.');
+	}
+
+	const user = await User.findOne({ username: username });
+	if (!user) {
+		// The user with the given username does not exist. Deny access.
+		return res.status(403).send('Could not find user with token.');
+	}
+
+	// Anything under here is reached with valid user information.
+
+	// Create new tokens.
+	const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, {
+		expiresIn: '2m',
+	});
+	const newRefreshToken = jwt.sign(
+		user.toJSON(),
+		process.env.REFRESH_TOKEN_SECRET,
+		{ expiresIn: '10m' }
+	);
+
+	// Store new tokens in Redis.
+	await client.set('accessToken', accessToken);
+	await client.set('refreshToken', newRefreshToken);
+
+	res.status(200).send('Successfully refreshed tokens.');
 });
 
 // Removes a user's access on log out.
