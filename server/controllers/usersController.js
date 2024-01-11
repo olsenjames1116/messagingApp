@@ -2,6 +2,13 @@ const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const redis = require('redis');
+
+if (process.env.MODE === 'production') {
+} else {
+	const client = redis.createClient();
+}
 
 // Validate and sanitize fields to create user on sign up.
 exports.validateUserSignUp = [
@@ -78,6 +85,7 @@ exports.validateUserLogIn = [
 	body('password', 'Password must not be empty.').trim().escape().notEmpty(),
 ];
 
+// Checks input credentials against stored credentials to log user in.
 exports.userLogInPost = asyncHandler(async (req, res, next) => {
 	// Extract the validation errors from the request.
 	const errors = validationResult(req);
@@ -90,9 +98,11 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 			message: errorMessages,
 		});
 	} else {
+		// There are no validation errors. Further check user credentials before logging in.
 		const { username, password } = req.body;
 		const user = await User.findOne({ username: username });
 		if (!user) {
+			// User does not exist in database.
 			return res.status(401).json({
 				message: 'Username does not exist.',
 			});
@@ -100,13 +110,29 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 
 		const match = await bcrypt.compare(password, user.password);
 		if (!match) {
+			// Input password and stored password does not match.
 			return res.status(401).json({
 				message: 'Invalid password.',
 			});
 		}
 
-		res.status(200).json({
-			message: 'Successful log in.',
-		});
+		// Anything below here is reached from a successful log in.
+
+		// Create an access token for the user.
+		const accessToken = jwt.sign(
+			user.toJSON(),
+			process.env.ACCESS_TOKEN_SECRET
+		);
+		// Create a refresh token for the user.
+		const refreshToken = jwt.sign(
+			user.toJSON(),
+			process.env.REFRESH_TOKEN_SECRET
+		);
+
+		// Store the tokens in Redis.
+		await client.set('accessToken', accessToken);
+		await client.set('refreshToken', refreshToken);
+
+		res.sendStatus(200);
 	}
 });

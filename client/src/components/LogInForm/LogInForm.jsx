@@ -14,32 +14,42 @@ function LogInForm() {
 
 	// const navigate = useNavigate();
 
+	// Send input to backend for validation.
 	const logIn = async () => {
 		try {
 			const response = await api.post('/user/log-in', {
 				username: username,
 				password: password,
 			});
+			// Anything below here is reached if input is valid.
 			console.log(response);
 		} catch (err) {
+			// Anything here is due to an error.
 			if (err.response.status === 400 || err.response.status === 401) {
+				// 400 and 401 error codes are sent from the backend if data from the form is invalid.
 				const { message } = err.response.data;
+				// Style message from backend to appear as invalid.
 				inputMessagesRef.current.style.color = 'red';
+				// Display message from backend.
 				err.response.status === 400
 					? setInputMessages([...message])
 					: setInputMessages([message]);
 			} else {
+				// This is a catch all for everything that is not invalid data.
 				console.log(err);
 			}
 		}
 	};
 
+	// Clear all input in the form.
 	const clearInput = () => {
 		usernameRef.current.value = '';
 		passwordRef.current.value = '';
 	};
 
+	// Reached when there is an error detected from front end validation.
 	const handleInputError = () => {
+		// Each check will determine what caused the error and display the appropriate error message for clarity.
 		if (!usernameRef.current.checkValidity()) {
 			usernameRef.current.validity.valueMissing &&
 				setInputMessages((state) => [...state, 'Username must not be empty.']);
@@ -51,6 +61,7 @@ function LogInForm() {
 		}
 	};
 
+	// Reached when the form has been submitted.
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
@@ -63,9 +74,11 @@ function LogInForm() {
 		}
 	};
 
+	// Reached when a change has been made to an input field.
 	const handleChange = ({ target }) => {
 		const { id, value } = target;
 
+		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'username':
 				setUsername(value);
