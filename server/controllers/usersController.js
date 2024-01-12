@@ -235,3 +235,36 @@ exports.userLogOutGet = asyncHandler(async (req, res, next) => {
 
 	res.status(200).send('Successfully removed user access.');
 });
+
+// Validate and sanitize data from the request.
+exports.validateUserUpdate = [
+	body('bio').trim().escape(),
+	body('profilePic')
+		.trim()
+		.escape()
+		.custom((profilePic) => {
+			if (!profilePic.includes('image')) {
+				// File must be of type image.
+				throw new Error('File is not of type image.');
+			} else {
+				return true;
+			}
+		}),
+];
+
+// Update a user's stored information in the db.
+exports.userProfilePut = asyncHandler(async (req, res, next) => {
+	// Extract the validation errors from a request.
+	const errors = validationResult(req);
+
+	const { bio, profilePic } = req.body;
+
+	if (!errors.isEmpty()) {
+		// There are errors. Render the form again with error message.
+		const errorMessages = errors.array().map((error) => error.msg);
+
+		return res.sendStatus(400);
+	} else {
+		res.status(202).send('Successfully updated user info.');
+	}
+});

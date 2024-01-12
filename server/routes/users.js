@@ -26,4 +26,12 @@ router.post('/refreshTokens', usersController.userRefreshTokensPost);
 // GET the path to remove a user's access.
 router.get('/log-out', usersController.userLogOutGet);
 
+// PUT a user's updated info from their edits to their profile into the db.
+router.put(
+	'/update-info',
+	usersController.userVerifyTokenGet,
+	usersController.validateUserUpdate,
+	usersController.userProfilePut
+);
+
 module.exports = router;
