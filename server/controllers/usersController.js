@@ -267,6 +267,19 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 			message: errorMessages,
 		});
 	} else {
+		const { username } = req.user;
+
+		const image = new Image({
+			data: profilePic,
+		});
+
+		const { _id } = await image.save();
+
+		await User.findOneAndUpdate(
+			{ username: username },
+			{ bio: bio, profilePic: _id }
+		);
+
 		res.status(202).send('Successfully updated user info.');
 	}
 });
