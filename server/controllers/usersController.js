@@ -141,13 +141,13 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		const accessToken = jwt.sign(
 			user.toJSON(),
 			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '2m' }
+			{ expiresIn: '30m' }
 		);
 		// Create a refresh token for the user.
 		const refreshToken = jwt.sign(
 			user.toJSON(),
 			process.env.REFRESH_TOKEN_SECRET,
-			{ expiresIn: '10m' }
+			{ expiresIn: '1h' }
 		);
 
 		// Store the tokens in Redis.
@@ -212,12 +212,12 @@ exports.userRefreshTokensPost = asyncHandler(async (req, res, next) => {
 
 	// Create new tokens.
 	const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: '2m',
+		expiresIn: '30m',
 	});
 	const newRefreshToken = jwt.sign(
 		user.toJSON(),
 		process.env.REFRESH_TOKEN_SECRET,
-		{ expiresIn: '10m' }
+		{ expiresIn: '1h' }
 	);
 
 	// Store new tokens in Redis.
