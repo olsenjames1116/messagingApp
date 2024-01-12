@@ -23,33 +23,40 @@ function EditUserForm() {
 			inputMessagesRef.current.style.color = 'red';
 			setInputMessages(['Files is not of type image.']);
 			return false;
+		} else {
+			return true;
+		}
+	};
+
+	const updateUserInfo = async () => {
+		try {
+			const response = await api.put('/user/update-info', {
+				bio: newBio,
+				profilePic: newProfilePic,
+			});
+			console.log(response);
+			dispatch(updatePhoto(newProfilePic));
+			dispatch(updateBio(newBio));
+		} catch (err) {
+			if (err.response.status === 400) {
+				console.log('invalid file type.');
+				const { message } = err.response.data;
+				inputMessagesRef.current.style.color = 'red';
+				setInputMessages([...message]);
+			} else {
+				console.log(err);
+			}
 		}
 	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		setInputMessages([]);
 
-		const formValidity = checkFormValidity();
+		const formIsValid = checkFormValidity();
 
-		if (formValidity) {
-			try {
-				const response = await api.put('/user/update-info', {
-					bio: newBio,
-					profilePic: newProfilePic,
-				});
-				console.log(response);
-				dispatch(updatePhoto(newProfilePic));
-				dispatch(updateBio(newBio));
-			} catch (err) {
-				if (err.response.status === 400) {
-					console.log('invalid file type.');
-					const { message } = err.response.data;
-					inputMessagesRef.current.style.color = 'red';
-					setInputMessages([...message]);
-				} else {
-					console.log(err);
-				}
-			}
+		if (formIsValid) {
+			updateUserInfo();
 		}
 	};
 

@@ -263,7 +263,9 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 		// There are errors. Render the form again with error message.
 		const errorMessages = errors.array().map((error) => error.msg);
 
-		return res.sendStatus(400);
+		return res.status(400).json({
+			message: errorMessages,
+		});
 	} else {
 		res.status(202).send('Successfully updated user info.');
 	}
