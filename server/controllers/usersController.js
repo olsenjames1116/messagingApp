@@ -5,7 +5,6 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
-const { request } = require('express');
 
 // Set up connection to Redis.
 let client;
@@ -239,14 +238,14 @@ exports.userLogOutGet = asyncHandler(async (req, res, next) => {
 // Validate and sanitize data from the request.
 exports.validateUserUpdate = [
 	body('bio').trim().escape(),
-	body('profilePic').custom((profilePic) => {
-		if (!profilePic.includes('image')) {
-			// File must be of type image.
-			throw new Error('File is not of type image.');
-		} else {
-			return true;
-		}
-	}),
+	// body('profilePic').custom((profilePic) => {
+	// 	if (!profilePic.includes('image')) {
+	// 		// File must be of type image.
+	// 		throw new Error('File is not of type image.');
+	// 	} else {
+	// 		return true;
+	// 	}
+	// }),
 ];
 
 // Update a user's stored information in the db.
@@ -254,7 +253,9 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 	// Extract the validation errors from a request.
 	const errors = validationResult(req);
 
-	const { bio, profilePic } = req.body;
+	// const { bio, profilePic } = req.body;
+	console.log(req.body);
+	console.log(req.file);
 
 	if (!errors.isEmpty()) {
 		// There are errors. Render the form again with error message.
@@ -266,12 +267,14 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 	} else {
 		// There are no errors. Update the user's information.
 		const { username } = req.user;
+		const { bio } = req.body;
+		const { filename, originalname } = req.file;
 
 		const image = new Image({
-			data: profilePic,
+			data: filename,
 		});
 
-		const storedImage = await Image.findOne({ data: profilePic });
+		const storedImage = await Image.findOne({ data: { $regex: originalname } });
 
 		let updatedImage;
 
@@ -288,6 +291,6 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 			{ bio: bio, profilePic: updatedImage }
 		);
 
-		res.status(202).send('Successfully updated user info.');
+		res.status(202).json({ image: filename });
 	}
 });

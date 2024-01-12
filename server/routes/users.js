@@ -3,6 +3,20 @@ const router = express.Router();
 
 const usersController = require('../controllers/usersController');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'client/src/assets/uploads/');
+	},
+	filename: function (req, file, cb) {
+		const uniqueSuffix = Date.now();
+		cb(null, `${uniqueSuffix}_${file.originalname}`);
+	},
+});
+
+const upload = multer({ storage: storage });
+
 // POST a new user when they sign up.
 router.post(
 	'/sign-up',
@@ -30,7 +44,8 @@ router.get('/log-out', usersController.userLogOutGet);
 router.put(
 	'/update-info',
 	usersController.userVerifyTokenGet,
-	usersController.validateUserUpdate,
+	upload.single('profilePic'),
+	// usersController.validateUserUpdate,
 	usersController.userProfilePut
 );
 

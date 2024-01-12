@@ -13,6 +13,9 @@ function EditUserForm() {
 	const [newProfilePic, setNewProfilePic] = useState(profilePic);
 	const [newBio, setNewBio] = useState(bio);
 	const [inputMessages, setInputMessages] = useState([]);
+	const [tempProfilePic, setTempProfilePic] = useState(
+		`/src/assets/uploads/${profilePic}`
+	);
 
 	const inputMessagesRef = useRef(null);
 
@@ -20,26 +23,37 @@ function EditUserForm() {
 
 	// Check if inputs from the form are valid.
 	const checkFormValidity = () => {
-		if (!newProfilePic.includes('image')) {
-			// Reached if the file from the form is not an image.
-			inputMessagesRef.current.style.color = 'red';
-			setInputMessages(['Files is not of type image.']);
-			return false;
-		} else {
-			// Input from the form is valid.
-			return true;
-		}
+		// if (!newProfilePic.includes('image')) {
+		// 	// Reached if the file from the form is not an image.
+		// 	inputMessagesRef.current.style.color = 'red';
+		// 	setInputMessages(['Files is not of type image.']);
+		// 	return false;
+		// } else {
+		// Input from the form is valid.
+		return true;
+		// }
+	};
+
+	const convertInputToForm = () => {
+		const formData = new FormData();
+		formData.append('bio', newBio);
+		formData.append('profilePic', newProfilePic);
+
+		return formData;
 	};
 
 	// Update the user's info in the backend.
 	const updateUserInfo = async () => {
 		try {
-			await api.put('/user/update-info', {
-				bio: newBio,
-				profilePic: newProfilePic,
+			const formData = convertInputToForm();
+			for (const pair of formData.entries()) {
+				console.log(`${pair[0]}, ${pair[1]}`);
+			}
+			const response = await api.put('/user/update-info', formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
 			});
 			// Anything below here is reached on a successful call to the backend.
-			dispatch(updatePhoto(newProfilePic));
+			dispatch(updatePhoto(response.data.image));
 			dispatch(updateBio(newBio));
 		} catch (err) {
 			if (err.response?.status === 400) {
@@ -88,7 +102,8 @@ function EditUserForm() {
 		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'profilePic':
-				setNewProfilePic(await convertToBase64(files[0]));
+				setNewProfilePic(files[0]);
+				setTempProfilePic(await convertToBase64(files[0]));
 				break;
 			case 'bio':
 				setNewBio(value);
@@ -105,7 +120,7 @@ function EditUserForm() {
 				inputMessagesRef={inputMessagesRef}
 			/>
 			<div>
-				<img src={newProfilePic} />
+				<img src={tempProfilePic} />
 				<label htmlFor="profilePic">
 					<img src={pencilImage} />
 				</label>
