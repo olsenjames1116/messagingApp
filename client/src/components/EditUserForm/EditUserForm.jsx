@@ -18,37 +18,43 @@ function EditUserForm() {
 
 	const dispatch = useDispatch();
 
+	// Check if inputs from the form are valid.
 	const checkFormValidity = () => {
 		if (!newProfilePic.includes('image')) {
+			// Reached if the file from the form is not an image.
 			inputMessagesRef.current.style.color = 'red';
 			setInputMessages(['Files is not of type image.']);
 			return false;
 		} else {
+			// Input from the form is valid.
 			return true;
 		}
 	};
 
+	// Update the user's info in the backend.
 	const updateUserInfo = async () => {
 		try {
-			const response = await api.put('/user/update-info', {
+			await api.put('/user/update-info', {
 				bio: newBio,
 				profilePic: newProfilePic,
 			});
-			console.log(response);
+			// Anything below here is reached on a successful call to the backend.
 			dispatch(updatePhoto(newProfilePic));
 			dispatch(updateBio(newBio));
 		} catch (err) {
 			if (err.response.status === 400) {
-				console.log('invalid file type.');
+				// Reached from a validation error from the backend. Display the validation error.
 				const { message } = err.response.data;
 				inputMessagesRef.current.style.color = 'red';
 				setInputMessages([...message]);
 			} else {
+				// A catch all to display errors to the console.
 				console.log(err);
 			}
 		}
 	};
 
+	// Reached when the form is submitted.
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		setInputMessages([]);
@@ -56,10 +62,12 @@ function EditUserForm() {
 		const formIsValid = checkFormValidity();
 
 		if (formIsValid) {
+			// Reached if front validation passes.
 			updateUserInfo();
 		}
 	};
 
+	// Convert an image to base64 for storage in the db.
 	const convertToBase64 = async (image) => {
 		return new Promise((resolve, reject) => {
 			const fileReader = new FileReader();
@@ -73,9 +81,11 @@ function EditUserForm() {
 		});
 	};
 
+	// Reached when a change is made to an input field.
 	const handleChange = async (event) => {
 		const { id, value, files } = event.target;
 
+		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'profilePic':
 				setNewProfilePic(await convertToBase64(files[0]));
