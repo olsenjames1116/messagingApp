@@ -34,4 +34,7 @@ router.put(
 	usersController.userProfilePut
 );
 
+// GET information about a user to display on home page.
+router.get('/get-info', usersController.userVerifyTokenGet);
+
 module.exports = router;

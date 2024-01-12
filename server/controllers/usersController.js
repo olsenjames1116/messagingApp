@@ -239,17 +239,14 @@ exports.userLogOutGet = asyncHandler(async (req, res, next) => {
 // Validate and sanitize data from the request.
 exports.validateUserUpdate = [
 	body('bio').trim().escape(),
-	body('profilePic')
-		.trim()
-		.escape()
-		.custom((profilePic) => {
-			if (!profilePic.includes('image')) {
-				// File must be of type image.
-				throw new Error('File is not of type image.');
-			} else {
-				return true;
-			}
-		}),
+	body('profilePic').custom((profilePic) => {
+		if (!profilePic.includes('image')) {
+			// File must be of type image.
+			throw new Error('File is not of type image.');
+		} else {
+			return true;
+		}
+	}),
 ];
 
 // Update a user's stored information in the db.
@@ -267,17 +264,28 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 			message: errorMessages,
 		});
 	} else {
+		// There are no errors. Update the user's information.
 		const { username } = req.user;
 
 		const image = new Image({
 			data: profilePic,
 		});
 
-		const { _id } = await image.save();
+		const storedImage = await Image.findOne({ data: profilePic });
 
+		let updatedImage;
+
+		if (storedImage) {
+			updatedImage = storedImage._id;
+		} else {
+			const { _id } = await image.save();
+			updatedImage = _id;
+		}
+
+		// Update the user information in the db with the reference to the image.
 		await User.findOneAndUpdate(
 			{ username: username },
-			{ bio: bio, profilePic: _id }
+			{ bio: bio, profilePic: updatedImage }
 		);
 
 		res.status(202).send('Successfully updated user info.');

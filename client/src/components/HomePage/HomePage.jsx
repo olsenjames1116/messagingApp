@@ -31,7 +31,7 @@ function HomePage() {
 		// Verify a user's token to access this page.
 		const fetchData = async () => {
 			try {
-				await api.get('/user/verifyToken');
+				await api.get('/user/get-info');
 			} catch (err) {
 				if (err.response.status === 403) {
 					// This error means the user's token was invalid.

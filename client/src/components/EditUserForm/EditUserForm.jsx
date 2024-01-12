@@ -42,7 +42,7 @@ function EditUserForm() {
 			dispatch(updatePhoto(newProfilePic));
 			dispatch(updateBio(newBio));
 		} catch (err) {
-			if (err.response.status === 400) {
+			if (err.response?.status === 400) {
 				// Reached from a validation error from the backend. Display the validation error.
 				const { message } = err.response.data;
 				inputMessagesRef.current.style.color = 'red';

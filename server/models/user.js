@@ -9,9 +9,10 @@ const UserSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'Image',
 		required: true,
-		default: '659f296a250f775b11a56227',
+		default: '65a191ff334a868a73ea0532',
 	},
 	bio: { type: String, default: '' },
+	friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
 module.exports = mongoose.model('User', UserSchema);
