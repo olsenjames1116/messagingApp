@@ -40,6 +40,7 @@ function FriendSearchForm() {
 				console.log(err);
 			}
 		}
+		setSearchUsername('');
 	};
 
 	// Reached when the form is submitted.
@@ -60,7 +61,7 @@ function FriendSearchForm() {
 	const handleChange = ({ target }) => {
 		const { value } = target;
 
-		setSearchUsername(value);
+		setSearchUsername(value.split(' ').join(''));
 	};
 
 	return (
