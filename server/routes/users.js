@@ -45,4 +45,11 @@ router.get(
 	usersController.userSearchGet
 );
 
+// POST a new friend to a user's account in the db.
+router.post(
+	'/add-friend/:id',
+	usersController.userVerifyTokenGet,
+	usersController.userAddFriendPost
+);
+
 module.exports = router;

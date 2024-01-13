@@ -14,7 +14,7 @@ function Sidebar({ setDisplayMenu }) {
 	return (
 		<section>
 			<ul>
-				<li>
+				<li key={1}>
 					<button onClick={handleClick}>Add Friend</button>
 				</li>
 				{friends?.length === 0 && (
@@ -23,7 +23,10 @@ function Sidebar({ setDisplayMenu }) {
 					</li>
 				)}
 				{friends?.map((friend) => (
-					<li key={friend._id}>{friend.username}</li>
+					<li key={friend._id}>
+						<img src={friend.profilePic} />
+						<span>{friend.username}</span>
+					</li>
 				))}
 			</ul>
 		</section>

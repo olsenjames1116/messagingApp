@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const client = require('../utils/redis');
 const cloudinary = require('../utils/cloudinary');
+const mongoose = require('mongoose');
 
 // Validate and sanitize fields to create user on sign up.
 exports.validateUserSignUp = [
@@ -268,7 +269,7 @@ exports.validateUserGet = [
 	param('username', 'Enter a username.').trim().escape().notEmpty(),
 ];
 
-// Search for a user from
+// Search for a user in the db.
 exports.userSearchGet = asyncHandler(async (req, res, next) => {
 	// Extract the validation errors from the request.
 	const errors = validationResult(req);
@@ -291,5 +292,25 @@ exports.userSearchGet = asyncHandler(async (req, res, next) => {
 				message: `No user with username "${username}" was found.`,
 			});
 		}
+
+		res.status(200).json({
+			user: user,
+		});
 	}
+});
+
+// Add a new friend to a user's account in the db.
+exports.userAddFriendPost = asyncHandler(async (req, res, next) => {
+	const { user } = req;
+	const { id } = req.params;
+
+	user.friends.push(new mongoose.Types.ObjectId(id));
+	console.log(user.friends);
+
+	await User.findOneAndUpdate(
+		{ username: user.username },
+		{ friends: user.friends }
+	);
+
+	res.status(200).send(`Added user: ${id} to friends.`);
 });

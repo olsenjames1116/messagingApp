@@ -16,12 +16,15 @@ export const userSlice = createSlice({
 		updateBio: (state, action) => {
 			return { ...state, bio: action.payload };
 		},
+		updateFriends: (state, action) => {
+			return { ...state, friends: [...state.friends, action.payload] };
+		},
 		removeUser: () => {
 			return {};
 		},
 	},
 });
 
-export const { addUser, updatePhoto, updateBio, removeUser } =
+export const { addUser, updatePhoto, updateBio, updateFriends, removeUser } =
 	userSlice.actions;
 export default userSlice.reducer;

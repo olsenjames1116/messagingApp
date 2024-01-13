@@ -2,9 +2,10 @@ import InputMessages from '../InputMessages/InputMessages';
 import { searchImage } from '../../assets/images';
 import api from '../../axiosConfig';
 import { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 // Represents the form to search for users.
-function FriendSearchForm() {
+function FriendSearchForm({ setFriendSearchResult }) {
 	const [searchUsername, setSearchUsername] = useState('');
 	const [inputMessages, setInputMessages] = useState([]);
 
@@ -28,7 +29,9 @@ function FriendSearchForm() {
 	const searchForUser = async () => {
 		try {
 			const response = await api.get(`/user/search/${searchUsername}`);
-			console.log(response);
+			const { user } = response.data;
+			console.log(user);
+			setFriendSearchResult([user]);
 		} catch (err) {
 			if (err.response?.status === 400) {
 				// Reached from the user not being found in the backend.
@@ -85,5 +88,9 @@ function FriendSearchForm() {
 		</form>
 	);
 }
+
+FriendSearchForm.propTypes = {
+	setFriendSearchResult: PropTypes.func,
+};
 
 export default FriendSearchForm;

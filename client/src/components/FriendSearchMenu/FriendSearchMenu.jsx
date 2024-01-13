@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import FriendSearchForm from '../FriendSearchForm/FriendSearchForm';
+import FriendSearchResult from '../FriendSearchResult/FriendSearchResult';
 
 // Represents the menu to search for users.
 function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
+	const [friendSearchResult, setFriendSearchResult] = useState([]);
+
 	useEffect(() => {
 		// Adds an event listener to hide the friend search menu.
 		document.addEventListener('mousedown', (event) => {
@@ -16,7 +19,8 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 
 	return (
 		<section ref={menuRef}>
-			<FriendSearchForm />
+			<FriendSearchForm setFriendSearchResult={setFriendSearchResult} />
+			<FriendSearchResult friendSearchResult={friendSearchResult} />
 		</section>
 	);
 }
