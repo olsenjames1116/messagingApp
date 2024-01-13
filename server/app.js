@@ -6,7 +6,6 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
-const redis = require('redis');
 
 const usersRouter = require('./routes/users');
 

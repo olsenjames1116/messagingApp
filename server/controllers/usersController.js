@@ -4,26 +4,8 @@ const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const redis = require('redis');
+const client = require('../utils/redis');
 const cloudinary = require('../utils/cloudinary');
-
-// Set up connection to Redis.
-let client;
-
-// This conditional allows for connection to a production build of Redis.
-if (process.env.MODE === 'production') {
-	client = redis.createClient({ url: process.env.REDIS_URL });
-} else {
-	// Reached if the build is still in development.
-	client = redis.createClient();
-}
-// Display meaningful messages to the console and connect to Redis.
-client
-	.on('connect', function () {
-		console.log('Connected to Redis');
-	})
-	.on('error', (err) => console.log('Redis Client Error', err))
-	.connect();
 
 // Validate and sanitize fields to create user on sign up.
 exports.validateUserSignUp = [
