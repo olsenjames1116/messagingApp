@@ -13,7 +13,7 @@ function User({ setDisplayDropDown }) {
 
 	return (
 		<div className="user" onClick={handleClick}>
-			{user && <img src={`/src/assets/uploads/${user.profilePic}`} />}
+			{user && <img src={user.profilePic} />}
 			<span>{user.username}</span>
 		</div>
 	);

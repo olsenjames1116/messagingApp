@@ -10,12 +10,10 @@ function EditUserForm() {
 	const profilePic = useSelector((state) => state.user.profilePic);
 	const bio = useSelector((state) => state.user.bio);
 
-	const [newProfilePic, setNewProfilePic] = useState(profilePic);
+	// const [newProfilePic, setNewProfilePic] = useState(profilePic);
 	const [newBio, setNewBio] = useState(bio);
 	const [inputMessages, setInputMessages] = useState([]);
-	const [tempProfilePic, setTempProfilePic] = useState(
-		`/src/assets/uploads/${profilePic}`
-	);
+	const [previewImage, setPreviewImage] = useState(profilePic);
 
 	const inputMessagesRef = useRef(null);
 
@@ -34,26 +32,27 @@ function EditUserForm() {
 		// }
 	};
 
-	const convertInputToForm = () => {
-		const formData = new FormData();
-		formData.append('bio', newBio);
-		formData.append('profilePic', newProfilePic);
+	// const convertInputToForm = () => {
+	// 	const formData = new FormData();
+	// 	formData.append('bio', newBio);
+	// 	formData.append('profilePic', newProfilePic);
 
-		return formData;
-	};
+	// 	return formData;
+	// };
 
 	// Update the user's info in the backend.
 	const updateUserInfo = async () => {
 		try {
-			const formData = convertInputToForm();
-			for (const pair of formData.entries()) {
-				console.log(`${pair[0]}, ${pair[1]}`);
-			}
-			const response = await api.put('/user/update-info', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
+			// const formData = convertInputToForm();
+			// for (const pair of formData.entries()) {
+			// 	console.log(`${pair[0]}, ${pair[1]}`);
+			// }
+			await api.put('/user/update-info', {
+				profilePic: previewImage,
+				bio: newBio,
 			});
 			// Anything below here is reached on a successful call to the backend.
-			dispatch(updatePhoto(response.data.image));
+			dispatch(updatePhoto(previewImage));
 			dispatch(updateBio(newBio));
 		} catch (err) {
 			if (err.response?.status === 400) {
@@ -82,17 +81,25 @@ function EditUserForm() {
 	};
 
 	// Convert an image to base64 for storage in the db.
-	const convertToBase64 = async (image) => {
-		return new Promise((resolve, reject) => {
-			const fileReader = new FileReader();
-			fileReader.readAsDataURL(image);
-			fileReader.onload = () => {
-				resolve(fileReader.result);
-			};
-			fileReader.onerror = (error) => {
-				reject(error);
-			};
-		});
+	// const convertToBase64 = async (image) => {
+	// 	return new Promise((resolve, reject) => {
+	// 		const fileReader = new FileReader();
+	// 		fileReader.readAsDataURL(image);
+	// 		fileReader.onload = () => {
+	// 			resolve(fileReader.result);
+	// 		};
+	// 		fileReader.onerror = (error) => {
+	// 			reject(error);
+	// 		};
+	// 	});
+	// };
+
+	const displayPreviewImage = (image) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onloadend = () => {
+			setPreviewImage(reader.result);
+		};
 	};
 
 	// Reached when a change is made to an input field.
@@ -102,8 +109,9 @@ function EditUserForm() {
 		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'profilePic':
-				setNewProfilePic(files[0]);
-				setTempProfilePic(await convertToBase64(files[0]));
+				// setNewProfilePic(files[0]);
+				displayPreviewImage(files[0]);
+				// setTempProfilePic(await convertToBase64(files[0]));
 				break;
 			case 'bio':
 				setNewBio(value);
@@ -120,7 +128,7 @@ function EditUserForm() {
 				inputMessagesRef={inputMessagesRef}
 			/>
 			<div>
-				<img src={tempProfilePic} />
+				<img src={previewImage} />
 				<label htmlFor="profilePic">
 					<img src={pencilImage} />
 				</label>

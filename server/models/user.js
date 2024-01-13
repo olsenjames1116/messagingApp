@@ -6,10 +6,10 @@ const UserSchema = new Schema({
 	username: { type: String, required: true, maxLength: 100 },
 	password: { type: String, required: true, maxLength: 100 },
 	profilePic: {
-		type: Schema.Types.ObjectId,
-		ref: 'Image',
+		type: String,
 		required: true,
-		default: '65a191ff334a868a73ea0532',
+		default:
+			'https://res.cloudinary.com/dszhwrjnv/image/upload/v1705107452/messagingApp/user_enybjy.png',
 	},
 	bio: { type: String, default: '' },
 	friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],

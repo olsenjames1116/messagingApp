@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
+const cloudinary = require('../utils/cloudinary');
 
 // Set up connection to Redis.
 let client;
@@ -116,9 +117,7 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 	} else {
 		// There are no validation errors. Further check user credentials before logging in.
 		const { username, password } = req.body;
-		const user = await User.findOne({ username: username })
-			.populate('profilePic')
-			.exec();
+		const user = await User.findOne({ username: username });
 		if (!user) {
 			// User does not exist in database.
 			return res.status(401).json({
@@ -156,7 +155,7 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 		// Return user info.
 		res.status(200).json({
 			username: user.username,
-			profilePic: user.profilePic.data,
+			profilePic: user.profilePic,
 			bio: user.bio,
 		});
 	}
@@ -255,7 +254,7 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 
 	// const { bio, profilePic } = req.body;
 	console.log(req.body);
-	console.log(req.file);
+	// console.log(req.file);
 
 	if (!errors.isEmpty()) {
 		// There are errors. Render the form again with error message.
@@ -267,30 +266,37 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 	} else {
 		// There are no errors. Update the user's information.
 		const { username } = req.user;
-		const { bio } = req.body;
-		const { filename, originalname } = req.file;
+		const { bio, profilePic } = req.body;
 
-		const image = new Image({
-			data: filename,
+		const { url } = await cloudinary.uploader.upload(profilePic, {
+			upload_preset: 'messagingApp',
 		});
 
-		const storedImage = await Image.findOne({ data: { $regex: originalname } });
+		console.log(url);
 
-		let updatedImage;
+		// const { filename, originalname } = req.file;
 
-		if (storedImage) {
-			updatedImage = storedImage._id;
-		} else {
-			const { _id } = await image.save();
-			updatedImage = _id;
-		}
+		// const image = new Image({
+		// 	data: profilePic,
+		// });
+
+		// const storedImage = await Image.findOne({ data: { $regex: originalname } });
+
+		// let updatedImage;
+
+		// if (storedImage) {
+		// 	updatedImage = storedImage._id;
+		// } else {
+		// 	const { _id } = await image.save();
+		// 	updatedImage = _id;
+		// }
 
 		// Update the user information in the db with the reference to the image.
-		await User.findOneAndUpdate(
-			{ username: username },
-			{ bio: bio, profilePic: updatedImage }
-		);
+		// await User.findOneAndUpdate(
+		// 	{ username: username },
+		// 	{ bio: bio, profilePic: profilePic }
+		// );
 
-		res.status(202).json({ image: filename });
+		// res.status(202).json({ image: filename });
 	}
 });
