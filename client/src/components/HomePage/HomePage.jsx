@@ -1,13 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 import Header from '../Header/Header';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
 import Sidebar from '../Sidebar/Sidebar';
+import FriendSearchMenu from '../FriendSearchMenu/FriendSearchMenu';
 
 // Represents the home page for the user.
 function HomePage() {
+	const [displayMenu, setDisplayMenu] = useState(false);
+
+	const menuRef = useRef(null);
+
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
@@ -49,8 +54,15 @@ function HomePage() {
 		<>
 			<Header />
 			<main>
-				<Sidebar />
+				<Sidebar setDisplayMenu={setDisplayMenu} />
 				<div className="content">Home Page</div>
+				{displayMenu && (
+					<FriendSearchMenu
+						displayMenu={displayMenu}
+						setDisplayMenu={setDisplayMenu}
+						menuRef={menuRef}
+					/>
+				)}
 			</main>
 		</>
 	);
