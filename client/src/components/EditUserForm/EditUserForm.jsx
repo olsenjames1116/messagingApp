@@ -83,7 +83,6 @@ function EditUserForm() {
 		const reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onloadend = () => {
-			console.log(reader.result);
 			setPreviewImage(reader.result);
 		};
 	};
@@ -96,7 +95,6 @@ function EditUserForm() {
 		switch (id) {
 			case 'profilePic':
 				displayPreviewImage(files[0]);
-				console.log(files[0]);
 				break;
 			case 'bio':
 				setNewBio(value);
