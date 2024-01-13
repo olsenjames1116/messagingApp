@@ -21,32 +21,20 @@ function EditUserForm() {
 
 	// Check if inputs from the form are valid.
 	const checkFormValidity = () => {
-		// if (!newProfilePic.includes('image')) {
-		// 	// Reached if the file from the form is not an image.
-		// 	inputMessagesRef.current.style.color = 'red';
-		// 	setInputMessages(['Files is not of type image.']);
-		// 	return false;
-		// } else {
-		// Input from the form is valid.
-		return true;
-		// }
+		if (!previewImage.includes('image')) {
+			// Reached if the file from the form is not an image.
+			inputMessagesRef.current.style.color = 'red';
+			setInputMessages(['Files is not of type image.']);
+			return false;
+		} else {
+			// Input from the form is valid.
+			return true;
+		}
 	};
-
-	// const convertInputToForm = () => {
-	// 	const formData = new FormData();
-	// 	formData.append('bio', newBio);
-	// 	formData.append('profilePic', newProfilePic);
-
-	// 	return formData;
-	// };
 
 	// Update the user's info in the backend.
 	const updateUserInfo = async () => {
 		try {
-			// const formData = convertInputToForm();
-			// for (const pair of formData.entries()) {
-			// 	console.log(`${pair[0]}, ${pair[1]}`);
-			// }
 			await api.put('/user/update-info', {
 				profilePic: previewImage,
 				bio: newBio,
@@ -80,20 +68,7 @@ function EditUserForm() {
 		}
 	};
 
-	// Convert an image to base64 for storage in the db.
-	// const convertToBase64 = async (image) => {
-	// 	return new Promise((resolve, reject) => {
-	// 		const fileReader = new FileReader();
-	// 		fileReader.readAsDataURL(image);
-	// 		fileReader.onload = () => {
-	// 			resolve(fileReader.result);
-	// 		};
-	// 		fileReader.onerror = (error) => {
-	// 			reject(error);
-	// 		};
-	// 	});
-	// };
-
+	// Displays the image selected by the user as a preview.
 	const displayPreviewImage = (image) => {
 		const reader = new FileReader();
 		reader.readAsDataURL(image);
