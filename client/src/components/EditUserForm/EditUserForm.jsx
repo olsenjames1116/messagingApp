@@ -76,7 +76,7 @@ function EditUserForm() {
 		const formIsValid = checkFormValidity();
 
 		if (formIsValid) {
-			// Reached if front validation passes.
+			// Reached if front end validation passes.
 			updateUserInfo();
 		}
 	};

@@ -258,6 +258,7 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 			{ bio: bio, profilePic: url }
 		);
 
+		// Return the url to the new image to display the change on front end.
 		res.status(202).json({ image: url });
 	}
 });
@@ -267,16 +268,20 @@ exports.validateUserGet = [
 	param('username', 'Enter a username.').trim().escape().notEmpty(),
 ];
 
+// Search for a user from
 exports.userSearchGet = asyncHandler(async (req, res, next) => {
+	// Extract the validation errors from the request.
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
+		// There are errors. Render form again with error messages.s
 		const errorMessages = errors.array().map((error) => error.msg);
 
 		return res.status(400).json({
 			message: errorMessages,
 		});
 	} else {
+		// There are no validation errors.
 		const { username } = req.params;
 
 		const user = await User.findOne({ username: username });
