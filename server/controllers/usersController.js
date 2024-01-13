@@ -100,7 +100,10 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 	} else {
 		// There are no validation errors. Further check user credentials before logging in.
 		const { username, password } = req.body;
-		const user = await User.findOne({ username: username });
+		const user = await User.findOne({ username: username }).populate({
+			path: 'friends',
+			select: '_id username profilePic',
+		});
 		if (!user) {
 			// User does not exist in database.
 			return res.status(401).json({
@@ -312,5 +315,5 @@ exports.userAddFriendPost = asyncHandler(async (req, res, next) => {
 		{ friends: user.friends }
 	);
 
-	res.status(200).send(`Added user: ${id} to friends.`);
+	res.status(200).send(`Successfully user: ${id} to friends.`);
 });
