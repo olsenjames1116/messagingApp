@@ -35,7 +35,7 @@ api.interceptors.response.use(
 				return (document.location.href = '/log-in');
 			}
 		}
-		Promise.reject(error);
+		return Promise.reject(error);
 	}
 );
 

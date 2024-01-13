@@ -9,6 +9,7 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 	const [inputMessages, setInputMessages] = useState([]);
 
 	const inputMessagesRef = useRef(null);
+	const inputRef = useRef(null);
 
 	useEffect(() => {
 		document.addEventListener('mousedown', (event) => {
@@ -31,6 +32,7 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		setInputMessages([]);
+		inputRef.current.value = '';
 
 		const formIsValid = checkFormValidity();
 
@@ -39,7 +41,15 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 				const response = await api.get(`/user/search/${searchUsername}`);
 				console.log(response);
 			} catch (err) {
-				console.log(err);
+				if (err.response?.status === 400) {
+					// Reached from the user not being found in the backend.
+					const { message } = err.response.data;
+					inputMessagesRef.current.style.color = 'red';
+					setInputMessages([message]);
+				} else {
+					// A catch all to display errors to the console.
+					console.log(err);
+				}
 			}
 		}
 	};
@@ -62,6 +72,7 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 					id="user"
 					placeholder="Search for user..."
 					onChange={handleChange}
+					ref={inputRef}
 				/>
 				<button>Submit</button>
 				<InputMessages

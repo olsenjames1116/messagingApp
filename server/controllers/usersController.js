@@ -277,6 +277,14 @@ exports.userSearchGet = asyncHandler(async (req, res, next) => {
 			message: errorMessages,
 		});
 	} else {
-		console.log('No search errors.');
+		const { username } = req.params;
+
+		const user = await User.findOne({ username: username });
+		if (!user) {
+			// User does not exist in the database.
+			return res.status(400).json({
+				message: `No user with username "${username}" was found.`,
+			});
+		}
 	}
 });
