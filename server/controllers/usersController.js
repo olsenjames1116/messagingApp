@@ -288,7 +288,10 @@ exports.userSearchGet = asyncHandler(async (req, res, next) => {
 		// There are no validation errors.
 		const { username } = req.params;
 
-		const user = await User.findOne({ username: username });
+		const user = await User.findOne(
+			{ username: username },
+			'_id username profilePic'
+		);
 		if (!user) {
 			// User does not exist in the database.
 			return res.status(400).json({

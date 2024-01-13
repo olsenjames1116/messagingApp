@@ -51,6 +51,7 @@ function FriendSearchForm({ setFriendSearchResult }) {
 		event.preventDefault();
 		setInputMessages([]);
 		inputRef.current.value = '';
+		setFriendSearchResult([]);
 
 		const formIsValid = checkFormValidity();
 

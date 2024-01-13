@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import api from '../../axiosConfig';
 import { updateFriends } from '../../redux/state/userSlice';
 
 function FriendSearchResult({ friendSearchResult }) {
+	const friends = useSelector((state) => state.user.friends);
+
 	const dispatch = useDispatch();
 
 	const handleClick = async (event, user) => {
@@ -40,9 +42,13 @@ function FriendSearchResult({ friendSearchResult }) {
 				<li key={result._id}>
 					<img src={result.profilePic} />
 					<span>{result.username}</span>
-					<button onClick={(event) => handleClick(event, result)}>
-						Add Friend
-					</button>
+					{friends.filter((friend) => friend._id === result._id).length > 0 ? (
+						<button disabled>Already Added</button>
+					) : (
+						<button onClick={(event) => handleClick(event, result)}>
+							Add Friend
+						</button>
+					)}
 				</li>
 			))}
 		</ul>
