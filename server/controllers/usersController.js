@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const Image = require('../models/image');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -259,5 +259,24 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 		);
 
 		res.status(202).json({ image: url });
+	}
+});
+
+// Validate and sanitize field to retrieve user.
+exports.validateUserGet = [
+	param('username', 'Enter a username.').trim().escape().notEmpty(),
+];
+
+exports.userSearchGet = asyncHandler(async (req, res, next) => {
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		const errorMessages = errors.array().map((error) => error.msg);
+
+		return res.status(400).json({
+			message: errorMessages,
+		});
+	} else {
+		console.log('No search errors.');
 	}
 });

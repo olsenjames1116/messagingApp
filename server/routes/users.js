@@ -37,4 +37,12 @@ router.put(
 // GET information about a user to display on home page.
 router.get('/get-info', usersController.userVerifyTokenGet);
 
+// GET a user from the friend search.
+router.get(
+	'/search/:username',
+	usersController.userVerifyTokenGet,
+	usersController.validateUserGet,
+	usersController.userSearchGet
+);
+
 module.exports = router;
