@@ -1,15 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-require('./utils/mongodb');
 require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+require('./utils/mongodb');
 const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
 app.use(cors());
 app.use(logger('dev'));

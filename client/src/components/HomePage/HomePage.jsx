@@ -4,6 +4,7 @@ import api from '../../axiosConfig';
 import Header from '../Header/Header';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
+import Sidebar from '../Sidebar/Sidebar';
 
 // Represents the home page for the user.
 function HomePage() {
@@ -50,6 +51,7 @@ function HomePage() {
 		<>
 			<Header />
 			<main>
+				<Sidebar />
 				<div className="content">Home Page</div>
 			</main>
 		</>
