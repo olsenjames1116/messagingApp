@@ -139,6 +139,7 @@ exports.userLogInPost = asyncHandler(async (req, res, next) => {
 			username: user.username,
 			profilePic: user.profilePic,
 			bio: user.bio,
+			friends: user.friends,
 		});
 	}
 });

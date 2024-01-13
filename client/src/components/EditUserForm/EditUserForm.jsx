@@ -35,8 +35,11 @@ function EditUserForm() {
 	const handleSuccess = (response) => {
 		const { image } = response.data;
 		// Store the new info in local storage.
-		localStorage.setItem('bio', newBio);
-		localStorage.setItem('profilePic', image);
+		const user = JSON.parse(localStorage.getItem('user'));
+		localStorage.setItem(
+			'user',
+			JSON.stringify({ ...user, bio: newBio, profilePic: image })
+		);
 
 		// Update values in state with new info.
 		dispatch(updatePhoto(image));

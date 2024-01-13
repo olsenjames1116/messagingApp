@@ -15,9 +15,7 @@ api.interceptors.response.use(
 			error.response.status === 403 &&
 			originalRequest.url === '/user/refreshTokens'
 		) {
-			localStorage.removeItem('username');
-			localStorage.removeItem('bio');
-			localStorage.removeItem('profilePic');
+			localStorage.removeItem('user');
 
 			await api.get('/user/log-out');
 
@@ -28,7 +26,7 @@ api.interceptors.response.use(
 			originalRequest._retry = true;
 			try {
 				await api.post('/user/refreshTokens', {
-					username: localStorage.getItem('username'),
+					username: JSON.parse(localStorage.getItem('user')).username,
 				});
 
 				return await api.get(originalRequest.url);

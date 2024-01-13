@@ -22,13 +22,11 @@ function LogInForm() {
 	// Reached from a successful log in.
 	const handleSuccess = (response) => {
 		// Store user information returned from backend.
-		const { username, bio, profilePic } = response.data;
-		localStorage.setItem('username', username);
-		localStorage.setItem('bio', bio);
-		localStorage.setItem('profilePic', profilePic);
+		const user = response.data;
+		localStorage.setItem('user', JSON.stringify(user));
 
 		// Store the user information in state.
-		dispatch(addUser({ username: username, bio: bio, profilePic: profilePic }));
+		dispatch(addUser(user));
 
 		// Navigate user to their home page.
 		navigate('/');

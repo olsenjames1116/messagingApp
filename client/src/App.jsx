@@ -7,13 +7,10 @@ function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const username = localStorage.getItem('username');
-		const bio = localStorage.getItem('bio');
-		const profilePic = localStorage.getItem('profilePic');
+		const user = JSON.parse(localStorage.getItem('user'));
+		console.log(user);
 
-		const user = { username: username, bio: bio, profilePic: profilePic };
-
-		username && dispatch(addUser(user));
+		user && dispatch(addUser(user));
 	}, []);
 
 	return (

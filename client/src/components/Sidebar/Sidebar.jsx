@@ -1,5 +1,21 @@
+import { useSelector } from 'react-redux';
+
 function Sidebar() {
-	return <div>Sidebar</div>;
+	const friends = useSelector((state) => state.user.friends);
+
+	const handleClick = (event) => {
+		event.preventDefault();
+	};
+
+	return (
+		<section>
+			<ul>
+				<li>
+					<button onClick={handleClick}>Add Friend</button>
+				</li>
+			</ul>
+		</section>
+	);
 }
 
 export default Sidebar;

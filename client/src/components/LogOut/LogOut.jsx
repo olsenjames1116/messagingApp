@@ -12,9 +12,7 @@ function LogOut() {
 	// Reached after a successful call to the backend.
 	const handleSuccess = () => {
 		// Remove the user's info from localStorage.
-		localStorage.removeItem('username');
-		localStorage.removeItem('profilePic');
-		localStorage.removeItem('bio');
+		localStorage.removeItem('user');
 
 		// Remove the user's info from state.
 		dispatch(removeUser());
