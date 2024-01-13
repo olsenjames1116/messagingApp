@@ -30,7 +30,7 @@ router.get('/log-out', usersController.userLogOutGet);
 router.put(
 	'/update-info',
 	usersController.userVerifyTokenGet,
-	// usersController.validateUserUpdate,
+	usersController.validateUserUpdate,
 	usersController.userProfilePut
 );
 

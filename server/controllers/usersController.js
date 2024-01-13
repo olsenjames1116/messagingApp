@@ -252,10 +252,6 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 	// Extract the validation errors from a request.
 	const errors = validationResult(req);
 
-	// const { bio, profilePic } = req.body;
-	console.log(req.body);
-	// console.log(req.file);
-
 	if (!errors.isEmpty()) {
 		// There are errors. Render the form again with error message.
 		const errorMessages = errors.array().map((error) => error.msg);
@@ -268,35 +264,17 @@ exports.userProfilePut = asyncHandler(async (req, res, next) => {
 		const { username } = req.user;
 		const { bio, profilePic } = req.body;
 
+		// Store the image in Cloudinary and retrieve the url.
 		const { url } = await cloudinary.uploader.upload(profilePic, {
 			upload_preset: 'messagingApp',
 		});
 
-		console.log(url);
-
-		// const { filename, originalname } = req.file;
-
-		// const image = new Image({
-		// 	data: profilePic,
-		// });
-
-		// const storedImage = await Image.findOne({ data: { $regex: originalname } });
-
-		// let updatedImage;
-
-		// if (storedImage) {
-		// 	updatedImage = storedImage._id;
-		// } else {
-		// 	const { _id } = await image.save();
-		// 	updatedImage = _id;
-		// }
-
 		// Update the user information in the db with the reference to the image.
-		// await User.findOneAndUpdate(
-		// 	{ username: username },
-		// 	{ bio: bio, profilePic: profilePic }
-		// );
+		await User.findOneAndUpdate(
+			{ username: username },
+			{ bio: bio, profilePic: url }
+		);
 
-		// res.status(202).json({ image: filename });
+		res.status(202).json({ image: url });
 	}
 });

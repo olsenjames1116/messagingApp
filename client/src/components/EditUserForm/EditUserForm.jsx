@@ -10,7 +10,6 @@ function EditUserForm() {
 	const profilePic = useSelector((state) => state.user.profilePic);
 	const bio = useSelector((state) => state.user.bio);
 
-	// const [newProfilePic, setNewProfilePic] = useState(profilePic);
 	const [newBio, setNewBio] = useState(bio);
 	const [inputMessages, setInputMessages] = useState([]);
 	const [previewImage, setPreviewImage] = useState(profilePic);
@@ -32,16 +31,27 @@ function EditUserForm() {
 		}
 	};
 
+	// Reached if the update to the user's info was successful.
+	const handleSuccess = (response) => {
+		const { image } = response.data;
+		// Store the new info in local storage.
+		localStorage.setItem('bio', newBio);
+		localStorage.setItem('profilePic', image);
+
+		// Update values in state with new info.
+		dispatch(updatePhoto(image));
+		dispatch(updateBio(newBio));
+	};
+
 	// Update the user's info in the backend.
 	const updateUserInfo = async () => {
 		try {
-			await api.put('/user/update-info', {
+			const response = await api.put('/user/update-info', {
 				profilePic: previewImage,
 				bio: newBio,
 			});
 			// Anything below here is reached on a successful call to the backend.
-			dispatch(updatePhoto(previewImage));
-			dispatch(updateBio(newBio));
+			handleSuccess(response);
 		} catch (err) {
 			if (err.response?.status === 400) {
 				// Reached from a validation error from the backend. Display the validation error.
@@ -73,6 +83,7 @@ function EditUserForm() {
 		const reader = new FileReader();
 		reader.readAsDataURL(image);
 		reader.onloadend = () => {
+			console.log(reader.result);
 			setPreviewImage(reader.result);
 		};
 	};
@@ -84,9 +95,8 @@ function EditUserForm() {
 		// Determines which field was changed to store in state.
 		switch (id) {
 			case 'profilePic':
-				// setNewProfilePic(files[0]);
 				displayPreviewImage(files[0]);
-				// setTempProfilePic(await convertToBase64(files[0]));
+				console.log(files[0]);
 				break;
 			case 'bio':
 				setNewBio(value);
