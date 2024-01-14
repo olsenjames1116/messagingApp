@@ -1,10 +1,8 @@
-import { useSelector } from 'react-redux';
-import { upArrow } from '../../assets/images';
 import PropTypes from 'prop-types';
+import FriendList from '../FriendList/FriendList';
 
+// Represents the sidebar on the side of the page.
 function Sidebar({ setDisplayMenu }) {
-	const friends = useSelector((state) => state.user.friends);
-
 	const handleClick = (event) => {
 		event.preventDefault();
 
@@ -17,17 +15,7 @@ function Sidebar({ setDisplayMenu }) {
 				<li key={1}>
 					<button onClick={handleClick}>Add Friend</button>
 				</li>
-				{friends?.length === 0 && (
-					<li>
-						No friends yet. Add someone! <img src={upArrow} />
-					</li>
-				)}
-				{friends?.map((friend) => (
-					<li key={friend._id}>
-						<img src={friend.profilePic} />
-						<span>{friend.username}</span>
-					</li>
-				))}
+				<FriendList />
 			</ul>
 		</section>
 	);
