@@ -25,8 +25,8 @@ exports.messagePost =
 		} else {
 			// There are no errors. Store the message in the db and update user messages.
 			const { to, from, message } = req.body;
-			const { user } = req;
 
+			// Create and store a new message in the db.
 			const newMessage = new Message({
 				to: to,
 				from: from,
@@ -34,12 +34,14 @@ exports.messagePost =
 				timestamp: Date.now(),
 			});
 
+			// Retrieve the Object Id from the new message.
 			const { _id } = await newMessage.save();
 
-			await User.findOneAndUpdate({ _id: to }, { $push: { messages: _id } });
-
-			user.messages.push(_id);
+			// Update the messages for the user sending the message.
 			await User.findOneAndUpdate({ _id: from }, { $push: { messages: _id } });
+
+			// Update the messages for the user receiving the message.
+			await User.findOneAndUpdate({ _id: to }, { $push: { messages: _id } });
 
 			res
 				.status(200)
