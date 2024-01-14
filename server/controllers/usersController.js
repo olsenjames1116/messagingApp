@@ -85,67 +85,70 @@ exports.validateUserLogIn = [
 ];
 
 // Checks input credentials against stored credentials to log user in.
-exports.userLogInPost = asyncHandler(async (req, res, next) => {
-	// Extract the validation errors from the request.
-	const errors = validationResult(req);
+exports.userLogInPost =
+	// Process request after validation and sanitization.
+	asyncHandler(async (req, res, next) => {
+		// Extract the validation errors from the request.
+		const errors = validationResult(req);
 
-	if (!errors.isEmpty()) {
-		// There are errors. Render form again with error messages.
-		const errorMessages = errors.array().map((error) => error.msg);
+		if (!errors.isEmpty()) {
+			// There are errors. Render form again with error messages.
+			const errorMessages = errors.array().map((error) => error.msg);
 
-		return res.status(400).json({
-			message: errorMessages,
-		});
-	} else {
-		// There are no validation errors. Further check user credentials before logging in.
-		const { username, password } = req.body;
-		const user = await User.findOne({ username: username }).populate({
-			path: 'friends',
-			select: '_id username profilePic',
-		});
-		if (!user) {
-			// User does not exist in database.
-			return res.status(401).json({
-				message: 'Username does not exist.',
+			return res.status(400).json({
+				message: errorMessages,
+			});
+		} else {
+			// There are no validation errors. Further check user credentials before logging in.
+			const { username, password } = req.body;
+			const user = await User.findOne({ username: username }).populate({
+				path: 'friends',
+				select: '_id username profilePic',
+			});
+			if (!user) {
+				// User does not exist in database.
+				return res.status(401).json({
+					message: 'Username does not exist.',
+				});
+			}
+
+			const match = await bcrypt.compare(password, user.password);
+			if (!match) {
+				// Input password and stored password does not match.
+				return res.status(401).json({
+					message: 'Invalid password.',
+				});
+			}
+
+			// Anything below here is reached from a successful log in.
+
+			// Create an access token for the user.
+			const accessToken = jwt.sign(
+				user.toJSON(),
+				process.env.ACCESS_TOKEN_SECRET,
+				{ expiresIn: '30m' }
+			);
+			// Create a refresh token for the user.
+			const refreshToken = jwt.sign(
+				user.toJSON(),
+				process.env.REFRESH_TOKEN_SECRET,
+				{ expiresIn: '1h' }
+			);
+
+			// Store the tokens in Redis.
+			await client.set('accessToken', accessToken);
+			await client.set('refreshToken', refreshToken);
+
+			// Return user info.
+			res.status(200).json({
+				username: user.username,
+				profilePic: user.profilePic,
+				_id: user._id,
+				bio: user.bio,
+				friends: user.friends,
 			});
 		}
-
-		const match = await bcrypt.compare(password, user.password);
-		if (!match) {
-			// Input password and stored password does not match.
-			return res.status(401).json({
-				message: 'Invalid password.',
-			});
-		}
-
-		// Anything below here is reached from a successful log in.
-
-		// Create an access token for the user.
-		const accessToken = jwt.sign(
-			user.toJSON(),
-			process.env.ACCESS_TOKEN_SECRET,
-			{ expiresIn: '30m' }
-		);
-		// Create a refresh token for the user.
-		const refreshToken = jwt.sign(
-			user.toJSON(),
-			process.env.REFRESH_TOKEN_SECRET,
-			{ expiresIn: '1h' }
-		);
-
-		// Store the tokens in Redis.
-		await client.set('accessToken', accessToken);
-		await client.set('refreshToken', refreshToken);
-
-		// Return user info.
-		res.status(200).json({
-			username: user.username,
-			profilePic: user.profilePic,
-			bio: user.bio,
-			friends: user.friends,
-		});
-	}
-});
+	});
 
 // Verify a user's access token.
 exports.userVerifyTokenGet = asyncHandler(async (req, res, next) => {
@@ -234,37 +237,39 @@ exports.validateUserUpdate = [
 ];
 
 // Update a user's stored information in the db.
-exports.userProfilePut = asyncHandler(async (req, res, next) => {
-	// Extract the validation errors from a request.
-	const errors = validationResult(req);
+exports.userProfilePut =
+	// Process request after validation and sanitization.
+	asyncHandler(async (req, res, next) => {
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
 
-	if (!errors.isEmpty()) {
-		// There are errors. Render the form again with error message.
-		const errorMessages = errors.array().map((error) => error.msg);
+		if (!errors.isEmpty()) {
+			// There are errors. Render the form again with error message.
+			const errorMessages = errors.array().map((error) => error.msg);
 
-		return res.status(400).json({
-			message: errorMessages,
-		});
-	} else {
-		// There are no errors. Update the user's information.
-		const { username } = req.user;
-		const { bio, profilePic } = req.body;
+			return res.status(400).json({
+				message: errorMessages,
+			});
+		} else {
+			// There are no errors. Update the user's information.
+			const { username } = req.user;
+			const { bio, profilePic } = req.body;
 
-		// Store the image in Cloudinary and retrieve the url.
-		const { url } = await cloudinary.uploader.upload(profilePic, {
-			upload_preset: 'messagingApp',
-		});
+			// Store the image in Cloudinary and retrieve the url.
+			const { url } = await cloudinary.uploader.upload(profilePic, {
+				upload_preset: 'messagingApp',
+			});
 
-		// Update the user information in the db with the reference to the image.
-		await User.findOneAndUpdate(
-			{ username: username },
-			{ bio: bio, profilePic: url }
-		);
+			// Update the user information in the db with the reference to the image.
+			await User.findOneAndUpdate(
+				{ username: username },
+				{ bio: bio, profilePic: url }
+			);
 
-		// Return the url to the new image to display the change on front end.
-		res.status(202).json({ image: url });
-	}
-});
+			// Return the url to the new image to display the change on front end.
+			res.status(202).json({ image: url });
+		}
+	});
 
 // Validate and sanitize field to retrieve user.
 exports.validateUserGet = [
@@ -310,7 +315,6 @@ exports.userAddFriendPost = asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
 
 	user.friends.push(new mongoose.Types.ObjectId(id));
-	console.log(user.friends);
 
 	await User.findOneAndUpdate(
 		{ username: user.username },

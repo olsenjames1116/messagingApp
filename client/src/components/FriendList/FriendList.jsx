@@ -8,7 +8,6 @@ function FriendList() {
 	const dispatch = useDispatch();
 
 	const handleClick = (friend) => {
-		console.log(friend);
 		dispatch(addFriend(friend));
 	};
 

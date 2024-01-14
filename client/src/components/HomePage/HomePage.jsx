@@ -38,7 +38,7 @@ function HomePage() {
 			try {
 				await api.get('/user/get-info');
 			} catch (err) {
-				if (err.response.status === 403) {
+				if (err.response?.status === 403) {
 					// This error means the user's token was invalid.
 					logOut();
 				} else {

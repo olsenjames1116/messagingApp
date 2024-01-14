@@ -32,7 +32,13 @@ function MessageForm() {
 			});
 			console.log(response);
 		} catch (err) {
-			console.log(err);
+			if (err.response?.status === 400) {
+				const { message } = err.response.data;
+				inputMessagesRef.current.style.color = 'red';
+				setInputMessages([message]);
+			} else {
+				console.log(err);
+			}
 		}
 		setMessage('');
 	};

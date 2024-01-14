@@ -32,7 +32,7 @@ function EditUserPage() {
 			try {
 				await api.get('/user/verifyToken');
 			} catch (err) {
-				if (err.response.status === 403) {
+				if (err.response?.status === 403) {
 					// This error means the user's token was invalid.
 					logOut();
 				} else {

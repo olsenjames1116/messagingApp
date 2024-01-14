@@ -44,7 +44,7 @@ function SignUpForm() {
 			handleSuccess(response);
 		} catch (err) {
 			// Anything here is due to an error.
-			if (err.response.status === 400) {
+			if (err.response?.status === 400) {
 				// A 400 error code is sent from the backend if data from the request was invalid.
 				const { message } = err.response.data;
 				// Style message from backend to appear as invalid.

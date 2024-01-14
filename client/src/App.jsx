@@ -8,7 +8,6 @@ function App() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'));
-		console.log(user);
 
 		user && dispatch(addUser(user));
 	}, []);

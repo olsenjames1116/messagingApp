@@ -43,7 +43,7 @@ function LogInForm() {
 			handleSuccess(response);
 		} catch (err) {
 			// Anything here is due to an error.
-			if (err.response.status === 400 || err.response.status === 401) {
+			if (err.response?.status === 400 || err.response?.status === 401) {
 				// 400 and 401 error codes are sent from the backend if data from the form is invalid.
 				const { message } = err.response.data;
 				// Style message from backend to appear as invalid.
