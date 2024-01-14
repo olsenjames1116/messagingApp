@@ -13,8 +13,10 @@ function FriendList() {
 
 		try {
 			const response = await api.get(`/message/${friend._id}`);
-			console.log(response.data);
+			const { messages } = response.data;
+			console.log(messages);
 		} catch (err) {
+			// A catch to display errors to the console.
 			console.log(err);
 		}
 	};

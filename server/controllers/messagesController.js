@@ -54,11 +54,17 @@ exports.messagesGet = asyncHandler(async (req, res, next) => {
 	const { user } = req;
 	const { id } = req.params;
 
+	// Get all the messages that are sent and received from the currently selected friend.
 	const messagesBetweenUsers = user.messages.filter(
 		(message) => message.to == id || message.from === id
 	);
 
+	// Sort all messages between users by timestamp with oldest first.
+	const sortedMessages = messagesBetweenUsers.sort(
+		(a, b) => a.timestamp - b.timestamp
+	);
+
 	res.status(200).json({
-		messages: messagesBetweenUsers,
+		messages: sortedMessages,
 	});
 });
