@@ -314,11 +314,18 @@ exports.userAddFriendPost = asyncHandler(async (req, res, next) => {
 	const { user } = req;
 	const { id } = req.params;
 
-	user.friends.push(new mongoose.Types.ObjectId(id));
+	const friendId = new mongoose.Types.ObjectId(id);
+
+	user.friends.push(friendId);
 
 	await User.findOneAndUpdate(
 		{ username: user.username },
 		{ friends: user.friends }
+	);
+
+	await User.findOneAndUpdate(
+		{ _id: friendId },
+		{ $push: { friends: user._id } }
 	);
 
 	res.status(200).send(`Successfully user: ${id} to friends.`);
