@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const Image = require('../models/image');
 const { body, validationResult, param } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcrypt');

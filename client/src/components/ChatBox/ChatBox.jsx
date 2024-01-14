@@ -1,14 +1,21 @@
 import { useSelector } from 'react-redux';
+import Messages from '../Messages/Messages';
+import MessageForm from '../MessageForm/MessageForm';
 
 function ChatBox() {
 	const friend = useSelector((state) => state.friend);
 
 	return (
-		<div>
+		<div className="chatBox">
 			{Object.keys(friend).length === 1 ? (
-				<span>Select a friend to begin chatting</span>
+				// eslint-disable-next-line react/no-unescaped-entities
+				<span>Let's get started! Select a friend to begin chatting.</span>
 			) : (
-				<span>{friend.username}</span>
+				<>
+					<h2>{friend.username}</h2>
+					<Messages />
+					<MessageForm />
+				</>
 			)}
 		</div>
 	);
