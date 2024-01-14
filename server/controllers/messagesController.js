@@ -48,3 +48,17 @@ exports.messagePost =
 				.send(`Successfully sent: ${message} to: ${to} from: ${from}`);
 		}
 	});
+
+// Retrieve all the messages between the user and the specified one fron the db.
+exports.messagesGet = asyncHandler(async (req, res, next) => {
+	const { user } = req;
+	const { id } = req.params;
+
+	const messagesBetweenUsers = user.messages.filter(
+		(message) => message.to == id || message.from === id
+	);
+
+	res.status(200).json({
+		messages: messagesBetweenUsers,
+	});
+});

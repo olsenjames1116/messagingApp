@@ -101,10 +101,12 @@ exports.userLogInPost =
 		} else {
 			// There are no validation errors. Further check user credentials before logging in.
 			const { username, password } = req.body;
-			const user = await User.findOne({ username: username }).populate({
-				path: 'friends',
-				select: '_id username profilePic',
-			});
+			const user = await User.findOne({ username: username })
+				.populate({
+					path: 'friends',
+					select: '_id username profilePic',
+				})
+				.populate('messages');
 			if (!user) {
 				// User does not exist in database.
 				return res.status(401).json({

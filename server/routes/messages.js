@@ -11,4 +11,11 @@ router.post(
 	messagesController.messagePost
 );
 
+// GET all the messages between the user and the specified one.
+router.get(
+	'/:id',
+	usersController.userVerifyTokenGet,
+	messagesController.messagesGet
+);
+
 module.exports = router;

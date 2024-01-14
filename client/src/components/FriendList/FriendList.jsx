@@ -1,14 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { upArrow } from '../../assets/images';
 import { addFriend } from '../../redux/state/friendSlice';
+import api from '../../axiosConfig';
 
 function FriendList() {
 	const friends = useSelector((state) => state.user.friends);
 
 	const dispatch = useDispatch();
 
-	const handleClick = (friend) => {
+	const handleClick = async (friend) => {
 		dispatch(addFriend(friend));
+
+		try {
+			const response = await api.get(`/message/${friend._id}`);
+			console.log(response.data);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (

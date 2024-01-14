@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
+import { removeFriend } from '../../redux/state/friendSlice';
 
 // Represents the page on which the user can edit their profile.
 function EditUserPage() {
@@ -22,6 +23,9 @@ function EditUserPage() {
 
 			// Remove the user's info from state.
 			dispatch(removeUser());
+
+			// Remove friend info from state.
+			dispatch(removeFriend());
 
 			// Navigate the user back to log in.
 			navigate('/log-in');

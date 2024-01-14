@@ -25,12 +25,11 @@ function MessageForm() {
 
 	const sendMessage = async () => {
 		try {
-			const response = await api.post('/message/send-message', {
+			await api.post('/message/send-message', {
 				to: friend._id,
 				from: user._id,
 				message: message,
 			});
-			console.log(response);
 		} catch (err) {
 			if (err.response?.status === 400) {
 				const { message } = err.response.data;

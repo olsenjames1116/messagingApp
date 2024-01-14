@@ -7,6 +7,7 @@ import { removeUser } from '../../redux/state/userSlice';
 import Sidebar from '../Sidebar/Sidebar';
 import FriendSearchMenu from '../FriendSearchMenu/FriendSearchMenu';
 import ChatBox from '../ChatBox/ChatBox';
+import { removeFriend } from '../../redux/state/friendSlice';
 
 // Represents the home page for the user.
 function HomePage() {
@@ -28,6 +29,9 @@ function HomePage() {
 
 			// Remove the user's info from state.
 			dispatch(removeUser());
+
+			// Remove friend info from state.
+			dispatch(removeFriend());
 
 			// Navigate the user back to log in.
 			navigate('/log-in');
