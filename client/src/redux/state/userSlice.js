@@ -8,7 +8,7 @@ export const userSlice = createSlice({
 	},
 	reducers: {
 		addUser: (state, action) => {
-			return { ...state, ...action.payload };
+			return { ...action.payload };
 		},
 		updatePhoto: (state, action) => {
 			return { ...state, profilePic: action.payload };

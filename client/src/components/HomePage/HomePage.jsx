@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
 import Sidebar from '../Sidebar/Sidebar';
 import FriendSearchMenu from '../FriendSearchMenu/FriendSearchMenu';
+import ChatBox from '../ChatBox/ChatBox';
 
 // Represents the home page for the user.
 function HomePage() {
@@ -55,7 +56,9 @@ function HomePage() {
 			<Header />
 			<main>
 				<Sidebar setDisplayMenu={setDisplayMenu} />
-				<div className="content">Home Page</div>
+				<div className="content">
+					<ChatBox />
+				</div>
 				{displayMenu && (
 					<FriendSearchMenu
 						displayMenu={displayMenu}
