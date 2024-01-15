@@ -43,20 +43,28 @@ exports.messagePost =
 			// Update the messages for the user receiving the message.
 			await User.findOneAndUpdate({ _id: to }, { $push: { messages: _id } });
 
-			res
-				.status(200)
-				.send(`Successfully sent: ${message} to: ${to} from: ${from}`);
+			/* Retrieve the messages with the newly submitted message. Retrieve only messages 
+			that are either sent by or received by the user. Then sort messages from oldest to newest*/
+			const { messages } = await User.findById(from).populate({
+				path: 'messages',
+				match: { $or: [{ to: to }, { from: to }] },
+				sort: { timestamp: 1 },
+			});
+
+			res.status(200).json({
+				messages: messages,
+			});
 		}
 	});
 
 // Retrieve all the messages between the user and the specified one fron the db.
 exports.messagesGet = asyncHandler(async (req, res, next) => {
-	const { user } = req;
+	const { messages } = req.user;
 	const { id } = req.params;
 
 	// Get all the messages that are sent and received from the currently selected friend.
-	const messagesBetweenUsers = user.messages.filter(
-		(message) => message.to == id || message.from === id
+	const messagesBetweenUsers = messages.filter(
+		(message) => message.to === id || message.from === id
 	);
 
 	// Sort all messages between users by timestamp with oldest first.

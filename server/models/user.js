@@ -9,7 +9,7 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 		default:
-			'https://res.cloudinary.com/dszhwrjnv/image/upload/v1705107452/messagingApp/user_enybjy.png',
+			'https://res.cloudinary.com/dszhwrjnv/image/upload/v1705159500/messagingApp/ux1wwtkuksuegnpdpvg8.png',
 	},
 	bio: { type: String, default: '' },
 	friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],

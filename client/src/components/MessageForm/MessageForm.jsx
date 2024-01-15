@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import InputMessages from '../InputMessages/InputMessages';
 import api from '../../axiosConfig';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
 
 // Represents the message form in the chat box.
 function MessageForm() {
@@ -13,6 +14,8 @@ function MessageForm() {
 
 	const inputMessagesRef = useRef(null);
 	const inputRef = useRef(null);
+
+	const dispatch = useDispatch();
 
 	// Check if inputs from the form are valid.
 	const checkFormValidity = () => {
@@ -27,14 +30,22 @@ function MessageForm() {
 		}
 	};
 
+	// Reached after a successful call to the api.
+	const handleSuccess = (response) => {
+		// Store messages between users in state.
+		const { messages } = response.data;
+		dispatch(addMessagesBetweenUsers(messages));
+	};
+
 	// Store message in the backend.
 	const sendMessage = async () => {
 		try {
-			await api.post('/message/send-message', {
+			const response = await api.post('/message/send-message', {
 				to: friend._id,
 				from: user._id,
 				message: message,
 			});
+			handleSuccess(response);
 		} catch (err) {
 			if (err.response?.status === 400) {
 				// Reached from a validation error from the backend. Display the validation error.
