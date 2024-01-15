@@ -8,7 +8,7 @@ export const messagesBetweenUsersSlice = createSlice({
 	},
 	reducers: {
 		addMessagesBetweenUsers: (state, action) => {
-			return { ...state.value, ...action.payload };
+			return [...action.payload];
 		},
 		removeMessagesBetweenUsers: () => {
 			return {};
