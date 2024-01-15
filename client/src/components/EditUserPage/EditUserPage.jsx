@@ -6,6 +6,7 @@ import api from '../../axiosConfig';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
 import { removeFriend } from '../../redux/state/friendSlice';
+import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
 
 // Represents the page on which the user can edit their profile.
 function EditUserPage() {
@@ -26,6 +27,9 @@ function EditUserPage() {
 
 			// Remove friend info from state.
 			dispatch(removeFriend());
+
+			// Remove messages from state.
+			dispatch(removeMessagesBetweenUsers());
 
 			// Navigate the user back to log in.
 			navigate('/log-in');

@@ -7,7 +7,7 @@ function ChatBox() {
 
 	return (
 		<div className="chatBox">
-			{Object.keys(friend).length === 1 ? (
+			{Object.keys(friend).length < 2 ? (
 				// eslint-disable-next-line react/no-unescaped-entities
 				<span>Let's get started! Select a friend to begin chatting.</span>
 			) : (

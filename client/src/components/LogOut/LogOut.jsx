@@ -3,6 +3,7 @@ import api from '../../axiosConfig';
 import { removeUser } from '../../redux/state/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { removeFriend } from '../../redux/state/friendSlice';
+import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
 
 // Represents the log out component displayed in the user dropdown.
 function LogOut() {
@@ -20,6 +21,9 @@ function LogOut() {
 
 		// Remove friend info from state.
 		dispatch(removeFriend());
+
+		// Remove messages from state.
+		dispatch(removeMessagesBetweenUsers());
 
 		// Navigate the user back to log in.
 		navigate('/log-in');
