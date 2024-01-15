@@ -8,7 +8,7 @@ export const friendSlice = createSlice({
 	},
 	reducers: {
 		addFriend: (state, action) => {
-			return { ...action.payload };
+			return { ...state.value, ...action.payload };
 		},
 		removeFriend: () => {
 			return {};

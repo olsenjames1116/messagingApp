@@ -2,23 +2,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { upArrow } from '../../assets/images';
 import { addFriend } from '../../redux/state/friendSlice';
 import api from '../../axiosConfig';
+import { addMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
 
 function FriendList() {
 	const friends = useSelector((state) => state.user.friends);
 
 	const dispatch = useDispatch();
 
-	const handleClick = async (friend) => {
-		dispatch(addFriend(friend));
+	// Reached after a successful call to the api.
+	const handleSuccess = (response) => {
+		// Store messages between users in state.
+		const { messages } = response.data;
+		dispatch(addMessagesBetweenUsers(messages));
+	};
 
+	// Get all messages between users.
+	const getMessagesBetweenUsers = async (friend) => {
 		try {
 			const response = await api.get(`/message/${friend._id}`);
-			const { messages } = response.data;
-			console.log(messages);
+			// Anything below here is reached from a successful call to the api.
+			handleSuccess(response);
 		} catch (err) {
 			// A catch to display errors to the console.
 			console.log(err);
 		}
+	};
+
+	// Reached after a friend is clicked on.
+	const handleClick = (friend) => {
+		dispatch(addFriend(friend));
+		getMessagesBetweenUsers(friend);
 	};
 
 	return (
