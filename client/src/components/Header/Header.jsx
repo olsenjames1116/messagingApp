@@ -13,13 +13,16 @@ function Header() {
 		<header>
 			<Logo />
 			<User setDisplayDropDown={setDisplayDropDown} />
-			{displayDropDown && (
-				<UserDropDown
-					displayDropDown={displayDropDown}
-					setDisplayDropDown={setDisplayDropDown}
-					dropDownRef={dropDownRef}
-				/>
-			)}
+			{
+				// If the drop down is selected, display it.
+				displayDropDown && (
+					<UserDropDown
+						displayDropDown={displayDropDown}
+						setDisplayDropDown={setDisplayDropDown}
+						dropDownRef={dropDownRef}
+					/>
+				)
+			}
 		</header>
 	);
 }

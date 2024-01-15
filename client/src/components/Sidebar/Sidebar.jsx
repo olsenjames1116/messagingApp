@@ -3,6 +3,8 @@ import FriendList from '../FriendList/FriendList';
 
 // Represents the sidebar on the side of the page.
 function Sidebar({ setDisplayMenu }) {
+	/* Reached when the add friend button has been clicked. Will display the friend
+	search menu. */
 	const handleClick = (event) => {
 		event.preventDefault();
 

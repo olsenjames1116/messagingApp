@@ -36,17 +36,23 @@ function FriendList() {
 
 	return (
 		<>
-			{friends?.length === 0 && (
-				<li>
-					No friends yet. Add someone! <img src={upArrow} />
-				</li>
-			)}
-			{friends?.map((friend) => (
-				<li key={friend._id} onClick={() => handleClick(friend)}>
-					<img src={friend.profilePic} />
-					<span>{friend.username}</span>
-				</li>
-			))}
+			{
+				// If a the user has no friends, display a message.
+				friends?.length === 0 && (
+					<li>
+						No friends yet. Add someone! <img src={upArrow} />
+					</li>
+				)
+			}
+			{
+				// The user has friends. Display their friends.
+				friends?.map((friend) => (
+					<li key={friend._id} onClick={() => handleClick(friend)}>
+						<img src={friend.profilePic} />
+						<span>{friend.username}</span>
+					</li>
+				))
+			}
 		</>
 	);
 }

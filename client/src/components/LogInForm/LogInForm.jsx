@@ -85,9 +85,11 @@ function LogInForm() {
 		setInputMessages([]);
 
 		if (event.target.checkValidity()) {
+			// Input is valid.
 			logIn();
 			clearInput();
 		} else {
+			// Input is not valid.
 			inputMessagesRef.current.style.color = 'red';
 			handleInputError();
 		}

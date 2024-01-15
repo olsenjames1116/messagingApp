@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import SignUpForm from '../SignUpForm/SignUpForm';
 
+// Represents the sign up page for the user to create an account.
 function SignUpPage() {
 	useEffect(() => {
 		document.title = 'Sign Up';

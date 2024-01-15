@@ -67,13 +67,16 @@ function HomePage() {
 				<div className="content">
 					<ChatBox />
 				</div>
-				{displayMenu && (
-					<FriendSearchMenu
-						displayMenu={displayMenu}
-						setDisplayMenu={setDisplayMenu}
-						menuRef={menuRef}
-					/>
-				)}
+				{
+					// If the menu is selected, display it.
+					displayMenu && (
+						<FriendSearchMenu
+							displayMenu={displayMenu}
+							setDisplayMenu={setDisplayMenu}
+							menuRef={menuRef}
+						/>
+					)
+				}
 			</main>
 		</>
 	);
