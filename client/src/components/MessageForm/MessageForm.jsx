@@ -3,6 +3,7 @@ import InputMessages from '../InputMessages/InputMessages';
 import api from '../../axiosConfig';
 import { useSelector } from 'react-redux';
 
+// Represents the message form in the chat box.
 function MessageForm() {
 	const friend = useSelector((state) => state.friend);
 	const user = useSelector((state) => state.user);
@@ -13,16 +14,20 @@ function MessageForm() {
 	const inputMessagesRef = useRef(null);
 	const inputRef = useRef(null);
 
+	// Check if inputs from the form are valid.
 	const checkFormValidity = () => {
 		if (!message.trim()) {
+			// Reached if the message from the form is empty.
 			inputMessagesRef.current.style.color = 'red';
 			setInputMessages(['Cannot send an empty message.']);
 			return false;
 		} else {
+			// Input from the form is valid.
 			return true;
 		}
 	};
 
+	// Store message in the backend.
 	const sendMessage = async () => {
 		try {
 			await api.post('/message/send-message', {
@@ -32,16 +37,19 @@ function MessageForm() {
 			});
 		} catch (err) {
 			if (err.response?.status === 400) {
+				// Reached from a validation error from the backend. Display the validation error.
 				const { message } = err.response.data;
 				inputMessagesRef.current.style.color = 'red';
 				setInputMessages([message]);
 			} else {
+				// A catch all to display errors to the console.
 				console.log(err);
 			}
 		}
 		setMessage('');
 	};
 
+	// Reached when the form is submitted.
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setInputMessages([]);
@@ -50,10 +58,12 @@ function MessageForm() {
 		const formIsValid = checkFormValidity();
 
 		if (formIsValid) {
+			// Reached if front end validation passes.
 			sendMessage();
 		}
 	};
 
+	// Reached when a change is made to an input field.
 	const handleChange = ({ target }) => {
 		const { value } = target;
 
