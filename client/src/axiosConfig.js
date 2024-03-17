@@ -1,8 +1,4 @@
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { removeUser } from './redux/state/userSlice';
-import { removeFriend } from './redux/state/friendSlice';
-import { removeMessagesBetweenUsers } from './redux/state/messagesBetweenUsers';
 
 // Create an axios object to be used for api calls with presets.
 const api = axios.create({
@@ -18,7 +14,7 @@ api.interceptors.response.use(
 	async function (error) {
 		const originalRequest = error.config;
 
-		const dispatch = useDispatch();
+		// const dispatch = useDispatch();
 
 		/* Check if a 403 error was returned from invalid tokens and if that error was 
 		returned from refreshing tokens. */
@@ -30,22 +26,13 @@ api.interceptors.response.use(
 			// Remove user information from local storage.
 			localStorage.removeItem('user');
 
-			// Remove user information from state.
-			dispatch(removeUser());
-
-			// Remove friend info from state.
-			dispatch(removeFriend());
-
-			// Remove messages from state.
-			dispatch(removeMessagesBetweenUsers());
-
 			// Log the user out and redirect to log in.
 			await api.get('/user/log-out');
 
 			return (document.location.href = '/log-in');
 		}
 
-		// Check if a 403 error was returned and if a the request has been retried.
+		// Check if a 403 error was returned and if the request has been retried.
 		if (error.response?.status === 403 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
@@ -58,15 +45,6 @@ api.interceptors.response.use(
 			} catch (err) {
 				// There was an error refreshing tokens.
 				localStorage.removeItem('user');
-
-				// Remove user information from state.
-				dispatch(removeUser());
-
-				// Remove friend info from state.
-				dispatch(removeFriend());
-
-				// Remove messages from state.
-				dispatch(removeMessagesBetweenUsers());
 
 				// Log the user out and redirect to log in.
 				await api.get('/user/log-out');

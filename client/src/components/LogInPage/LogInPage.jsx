@@ -5,6 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../../redux/state/userSlice';
+import { removeUser } from '../../redux/state/userSlice';
+import { removeFriend } from '../../redux/state/friendSlice';
+import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
 
 // Represents the log in page.
 function LogInPage() {
@@ -13,6 +16,15 @@ function LogInPage() {
 
 	useEffect(() => {
 		document.title = 'Log In';
+
+		// Remove user information from state.
+		dispatch(removeUser());
+
+		// Remove friend info from state.
+		dispatch(removeFriend());
+
+		// Remove messages from state.
+		dispatch(removeMessagesBetweenUsers());
 	}, []);
 
 	// Reached from a successful demo account log in.
