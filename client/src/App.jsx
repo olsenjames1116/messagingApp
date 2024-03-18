@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Router from './Router';
 import { useDispatch } from 'react-redux';
 import { addUser } from './redux/state/userSlice';
+import './App.css';
 
 function App() {
 	const dispatch = useDispatch();

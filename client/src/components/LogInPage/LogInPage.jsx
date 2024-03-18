@@ -25,6 +25,7 @@ function LogInPage() {
 
 		// Remove messages from state.
 		dispatch(removeMessagesBetweenUsers());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Reached from a successful demo account log in.
