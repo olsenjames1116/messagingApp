@@ -8,6 +8,7 @@ import { addUser } from '../../redux/state/userSlice';
 import { removeUser } from '../../redux/state/userSlice';
 import { removeFriend } from '../../redux/state/friendSlice';
 import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
+import './LogInPage.css';
 
 // Represents the log in page.
 function LogInPage() {
@@ -58,14 +59,16 @@ function LogInPage() {
 
 	return (
 		<main>
-			<div className="content">
-				<div className="title">App Title</div>
+			<div className="content centerContent">
+				<div className="title">Hermes</div>
 				<div className="input">
 					<div className="banner">
 						<img src={userImage} />
 						<span>Welcome!</span>
 					</div>
 					<LogInForm />
+				</div>
+				<div className="options">
 					New Here?
 					<Link to="/sign-up">Sign Up</Link>
 					or Use the Demo Account
