@@ -1,0 +1,17 @@
+form.accountForm {
+	display: flex;
+	flex-direction: column;
+
+	&& > input {
+		height: 30px;
+		padding-left: 30px;
+	}
+}
+
+input.username {
+	background: url(../../assets/images/username.png) no-repeat 0px center;
+}
+
+input.password {
+	background: url(../../assets/images/password.png) no-repeat 0px center;
+}

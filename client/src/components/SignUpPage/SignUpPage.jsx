@@ -10,11 +10,13 @@ function SignUpPage() {
 
 	return (
 		<main>
-			<div className="content">
+			<div className="content centerContent">
 				<div className="title">App Title</div>
 				<div className="input">
 					<div className="banner">Create an Account</div>
 					<SignUpForm />
+				</div>
+				<div className="options">
 					Already have an account?
 					<Link to="/log-in">Log In</Link>
 				</div>

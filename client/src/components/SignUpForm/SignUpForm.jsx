@@ -124,8 +124,15 @@ function SignUpForm() {
 	};
 
 	return (
-		<form method="POST" action="" onSubmit={handleSubmit} noValidate>
+		<form
+			className="accountForm"
+			method="POST"
+			action=""
+			onSubmit={handleSubmit}
+			noValidate
+		>
 			<input
+				className="username"
 				type="text"
 				id="username"
 				name="username"
@@ -135,6 +142,7 @@ function SignUpForm() {
 				onChange={handleChange}
 			/>
 			<input
+				className="password"
 				type="password"
 				id="password"
 				name="password"
@@ -144,6 +152,7 @@ function SignUpForm() {
 				onChange={handleChange}
 			/>
 			<input
+				className="password"
 				type="password"
 				id="confirmPassword"
 				name="confirmPassword"

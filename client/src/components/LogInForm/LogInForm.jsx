@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../../redux/state/userSlice';
+import './LogInForm.css';
 
 // Represents the form displayed on the log in page.
 function LogInForm() {
@@ -113,8 +114,15 @@ function LogInForm() {
 	};
 
 	return (
-		<form method="POST" action="" onSubmit={handleSubmit} noValidate>
+		<form
+			className="accountForm"
+			method="POST"
+			action=""
+			onSubmit={handleSubmit}
+			noValidate
+		>
 			<input
+				className="username"
 				type="text"
 				id="username"
 				name="username"
@@ -124,6 +132,7 @@ function LogInForm() {
 				onChange={handleChange}
 			/>
 			<input
+				className="password"
 				type="password"
 				id="password"
 				name="password"
