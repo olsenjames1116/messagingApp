@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { userImage } from '../../assets/images';
+import { logo } from '../../assets/images';
 import LogInForm from '../LogInForm/LogInForm';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../axiosConfig';
@@ -63,7 +63,7 @@ function LogInPage() {
 				<div className="title">Hermes</div>
 				<div className="input">
 					<div className="banner">
-						<img src={userImage} />
+						<img src={logo} />
 						<span>Welcome!</span>
 					</div>
 					<LogInForm />
