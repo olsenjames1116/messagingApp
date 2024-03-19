@@ -1,0 +1,22 @@
+.dropDown {
+	position: absolute;
+	top: 74px;
+	right: 14px;
+	z-index: 1;
+	background-color: white;
+
+	animation: rotateDown 0.4s ease-in-out forwards;
+	transform-origin: top center;
+}
+
+@keyframes rotateDown {
+	0% {
+		transform: rotateX(-90deg);
+	}
+	70% {
+		transform: rotateX(20deg);
+	}
+	100% {
+		transform: rotateX(0deg);
+	}
+}

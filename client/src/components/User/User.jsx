@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import styles from './User.module.css';
 
 // Represents the user info displayed in the header.
 function User({ setDisplayDropDown }) {
@@ -12,8 +13,8 @@ function User({ setDisplayDropDown }) {
 	};
 
 	return (
-		<div className="user" onClick={handleClick}>
-			{user && <img src={user.profilePic} />}
+		<div className={styles.user} onClick={handleClick}>
+			{user && <img className="userImage" src={user.profilePic} />}
 			<span>{user.username}</span>
 		</div>
 	);

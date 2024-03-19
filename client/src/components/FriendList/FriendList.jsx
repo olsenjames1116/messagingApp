@@ -48,7 +48,7 @@ function FriendList() {
 				// The user has friends. Display their friends.
 				friends?.map((friend) => (
 					<li key={friend._id} onClick={() => handleClick(friend)}>
-						<img src={friend.profilePic} />
+						<img className="userImage" src={friend.profilePic} />
 						<span>{friend.username}</span>
 					</li>
 				))

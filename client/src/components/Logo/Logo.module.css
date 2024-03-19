@@ -1,0 +1,10 @@
+.logo {
+	display: flex;
+	align-items: center;
+	font-size: 2rem;
+	gap: 10px;
+
+	&& span {
+		color: black;
+	}
+}
