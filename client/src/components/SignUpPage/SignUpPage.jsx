@@ -11,7 +11,7 @@ function SignUpPage() {
 	return (
 		<main>
 			<div className="content centerContent">
-				<div className="title">App Title</div>
+				<div className="title">Hermes</div>
 				<div className="input">
 					<div className="banner">Create an Account</div>
 					<SignUpForm />

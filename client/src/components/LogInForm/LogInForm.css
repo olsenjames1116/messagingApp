@@ -5,6 +5,12 @@ form.accountForm {
 	&& > input {
 		height: 30px;
 		padding-left: 30px;
+		font-size: 1.4rem;
+	}
+
+	&& > button {
+		width: 50%;
+		align-self: center;
 	}
 }
 
