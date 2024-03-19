@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Router from './Router';
 import { useDispatch } from 'react-redux';
 import { addUser } from './redux/state/userSlice';
+import Footer from './components/Footer/Footer';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
 	return (
 		<>
 			<Router />
+			<Footer />
 		</>
 	);
 }
