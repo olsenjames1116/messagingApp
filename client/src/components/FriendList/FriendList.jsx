@@ -3,6 +3,7 @@ import { upArrow } from '../../assets/images';
 import { addFriend } from '../../redux/state/friendSlice';
 import api from '../../axiosConfig';
 import { addMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
+import styles from './FriendList.module.css';
 
 function FriendList() {
 	const friends = useSelector((state) => state.user.friends);
@@ -47,7 +48,11 @@ function FriendList() {
 			{
 				// The user has friends. Display their friends.
 				friends?.map((friend) => (
-					<li key={friend._id} onClick={() => handleClick(friend)}>
+					<li
+						className={styles.friendContainer}
+						key={friend._id}
+						onClick={() => handleClick(friend)}
+					>
 						<img className="userImage" src={friend.profilePic} />
 						<span>{friend.username}</span>
 					</li>

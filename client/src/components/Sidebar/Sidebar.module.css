@@ -1,3 +1,19 @@
 .sidebar {
 	grid-area: 1 / 1 / 4 / 2;
+
+	&& > ul {
+		display: flex;
+		flex-direction: column;
+		list-style-type: none;
+		margin: 0;
+		padding: 10px;
+		gap: 5px;
+		overflow: auto;
+		height: calc(100% - 20px);
+	}
+}
+
+.buttonContainer {
+	display: flex;
+	justify-content: center;
 }
