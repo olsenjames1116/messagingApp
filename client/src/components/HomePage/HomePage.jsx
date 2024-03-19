@@ -9,6 +9,7 @@ import FriendSearchMenu from '../FriendSearchMenu/FriendSearchMenu';
 import ChatBox from '../ChatBox/ChatBox';
 import { removeFriend } from '../../redux/state/friendSlice';
 import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
+import styles from './HomePage.module.css';
 
 // Represents the home page for the user.
 function HomePage() {
@@ -60,11 +61,11 @@ function HomePage() {
 	}, []);
 
 	return (
-		<>
+		<div className={`${styles.home} content`}>
 			<Header />
+			<Sidebar setDisplayMenu={setDisplayMenu} />
 			<main>
-				<Sidebar setDisplayMenu={setDisplayMenu} />
-				<div className="content">
+				<div className={styles.content}>
 					<ChatBox />
 				</div>
 				{
@@ -78,7 +79,7 @@ function HomePage() {
 					)
 				}
 			</main>
-		</>
+		</div>
 	);
 }
 

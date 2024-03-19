@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import Logo from '../Logo/Logo';
 import User from '../User/User';
 import UserDropDown from '../UserDropDown/UserDropDown';
+import './Header.module.css';
 
 // Represents the header at the top of the page.
 function Header() {

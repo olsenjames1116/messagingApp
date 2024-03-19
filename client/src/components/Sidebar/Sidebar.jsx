@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import FriendList from '../FriendList/FriendList';
+import styles from './Sidebar.module.css';
 
 // Represents the sidebar on the side of the page.
 function Sidebar({ setDisplayMenu }) {
@@ -7,13 +8,12 @@ function Sidebar({ setDisplayMenu }) {
 	search menu. */
 	const handleClick = (event) => {
 		event.preventDefault();
-		console.log('clicked');
 
 		setDisplayMenu(true);
 	};
 
 	return (
-		<section>
+		<section className={styles.sidebar}>
 			<ul>
 				<li key={1}>
 					<button onClick={handleClick}>Add Friend</button>
