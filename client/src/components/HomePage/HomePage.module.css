@@ -14,3 +14,10 @@
 	height: 75%;
 	width: 75%;
 }
+
+@media (max-width: 760px) {
+	.content {
+		height: 100%;
+		width: 100%;
+	}
+}
