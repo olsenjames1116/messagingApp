@@ -4,3 +4,9 @@
 	gap: 10px;
 	font-size: 1.2rem;
 }
+
+@media (max-width: 760px) {
+	.user > span {
+		display: none;
+	}
+}
