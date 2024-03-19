@@ -7,6 +7,7 @@ function Sidebar({ setDisplayMenu }) {
 	search menu. */
 	const handleClick = (event) => {
 		event.preventDefault();
+		console.log('clicked');
 
 		setDisplayMenu(true);
 	};
