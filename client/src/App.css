@@ -1,9 +1,11 @@
 * {
-	border: 1px solid black;
+	outline: 1px solid black;
 }
 
 div#root {
 	height: 100vh;
+	display: grid;
+	grid-template-rows: 1fr auto;
 }
 
 body {
@@ -12,6 +14,7 @@ body {
 
 main {
 	height: 100%;
+	overflow: auto;
 }
 
 img.userImage {

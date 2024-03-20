@@ -1,5 +1,6 @@
 .sidebar {
 	grid-area: 1 / 1 / 4 / 2;
+	height: 100vh;
 
 	&& > ul {
 		display: flex;

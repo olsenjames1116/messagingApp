@@ -10,3 +10,11 @@
 		text-align: center;
 	}
 }
+
+.friendSelected {
+	display: flex;
+	flex-direction: column;
+	padding: 5px;
+	width: 100%;
+	height: calc(100% - 10px);
+}
