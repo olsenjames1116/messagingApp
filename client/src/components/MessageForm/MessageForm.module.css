@@ -1,0 +1,13 @@
+.messageForm {
+	display: flex;
+	flex-direction: column;
+
+	&& > textarea {
+		resize: none;
+		height: 50px;
+	}
+
+	&& > button {
+		align-self: center;
+	}
+}

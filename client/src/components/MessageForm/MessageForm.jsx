@@ -3,6 +3,7 @@ import InputMessages from '../InputMessages/InputMessages';
 import api from '../../axiosConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
+import styles from './MessageForm.module.css';
 
 // Represents the message form in the chat box.
 function MessageForm() {
@@ -82,7 +83,12 @@ function MessageForm() {
 	};
 
 	return (
-		<form method="POST" action="" onSubmit={handleSubmit}>
+		<form
+			className={styles.messageForm}
+			method="POST"
+			action=""
+			onSubmit={handleSubmit}
+		>
 			<textarea
 				id="message"
 				name="message"
