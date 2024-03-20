@@ -15,7 +15,7 @@
 }
 
 @media (max-width: 760px) {
-	.logo > span {
+	.logo > img {
 		display: none;
 	}
 }

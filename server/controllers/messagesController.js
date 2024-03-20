@@ -51,6 +51,8 @@ exports.messagePost =
 				sort: { timestamp: 1 },
 			});
 
+			req.user.messages = [...messages];
+
 			res.status(200).json({
 				messages: messages,
 			});

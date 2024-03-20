@@ -4,6 +4,7 @@ import { updatePhoto, updateBio } from '../../redux/state/userSlice';
 import { useRef, useState } from 'react';
 import api from '../../axiosConfig';
 import InputMessages from '../InputMessages/InputMessages';
+import styles from './EditUserForm.module.css';
 
 // Represents the form to change user information on the edit user page.
 function EditUserForm() {
@@ -108,12 +109,17 @@ function EditUserForm() {
 	};
 
 	return (
-		<form method="POST" action="" onSubmit={handleSubmit}>
+		<form
+			className={styles.editUserForm}
+			method="POST"
+			action=""
+			onSubmit={handleSubmit}
+		>
 			<InputMessages
 				messages={inputMessages}
 				inputMessagesRef={inputMessagesRef}
 			/>
-			<div>
+			<div className={styles.previewImage}>
 				<img src={previewImage} />
 				<label htmlFor="profilePic">
 					<img src={pencilImage} />
@@ -132,6 +138,7 @@ function EditUserForm() {
 				cols="30"
 				rows="10"
 				onChange={handleChange}
+				placeholder="Tell us about yourself..."
 				defaultValue={newBio}
 			/>
 			<button>Submit</button>

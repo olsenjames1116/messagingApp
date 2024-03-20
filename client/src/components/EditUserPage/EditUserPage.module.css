@@ -1,0 +1,13 @@
+.edit {
+	height: 100%;
+}
+
+.editMain {
+	height: calc(100% - 70px);
+}
+
+.editContent {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}

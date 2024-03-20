@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { removeUser } from '../../redux/state/userSlice';
 import { removeFriend } from '../../redux/state/friendSlice';
 import { removeMessagesBetweenUsers } from '../../redux/state/messagesBetweenUsers';
+import styles from './EditUserPage.module.css';
 
 // Represents the page on which the user can edit their profile.
 function EditUserPage() {
@@ -54,14 +55,14 @@ function EditUserPage() {
 	}, []);
 
 	return (
-		<>
+		<div className={styles.edit}>
 			<Header />
-			<main>
-				<div className="content">
+			<main className={styles.editMain}>
+				<div className={styles.editContent}>
 					<EditUserForm />
 				</div>
 			</main>
-		</>
+		</div>
 	);
 }
 

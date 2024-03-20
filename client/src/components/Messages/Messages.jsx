@@ -1,15 +1,26 @@
 import { useSelector } from 'react-redux';
 import styles from './Messages.module.css';
+import { useRef, useEffect } from 'react';
 
 // Represents the messages between users displayed in the chat box.
 function Messages() {
+	const lastElementRef = useRef(null);
+	const messagesRef = useRef(null);
+
 	const messagesBetweenUsers = useSelector(
 		(state) => state.messagesBetweenUsers
 	);
 	const user = useSelector((state) => state.user);
 
+	useEffect(() => {
+		messagesRef.current.scrollTo({
+			top: messagesRef.current.scrollHeight,
+			left: 0,
+		});
+	}, []);
+
 	return (
-		<ul className={styles.messages}>
+		<ul className={styles.messages} ref={messagesRef}>
 			{
 				// Check if there is an array stored in state. If so, display the messages.
 				Array.isArray(messagesBetweenUsers) &&
@@ -37,6 +48,7 @@ function Messages() {
 						}
 					})
 			}
+			<li ref={lastElementRef} />
 		</ul>
 	);
 }
