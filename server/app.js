@@ -6,14 +6,30 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('./utils/mongodb');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const { rateLimit } = require('express-rate-limit');
 
 const usersRouter = require('./routes/users');
 const messagesRouter = require('./routes/messages');
 
 const app = express();
 
+// Apply rate limit to all requests.
+const limiter = rateLimit({
+	windowMs: 1 * 60 * 1000,
+	max: 20,
+});
+
 // Middleware for all requests.
-app.use(cors());
+app.use(limiter);
+app.use(helmet());
+app.use(compression());
+app.use(
+	cors({
+		origin: [`${process.env.FRONT_URL}`, 'http://localhost:5173'],
+	})
+);
 app.use(logger('dev'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: false }));
