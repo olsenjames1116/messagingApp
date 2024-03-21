@@ -3,4 +3,16 @@ footer {
 	align-items: center;
 	justify-content: center;
 	margin-top: auto;
+	background-color: var(--darkGray);
+	color: var(--lightBrown);
+
+	&& > p > a {
+		text-decoration: none;
+		color: var(--lightBrown);
+
+		&&:hover,
+		&&:focus {
+			filter: contrast(2);
+		}
+	}
 }

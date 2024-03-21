@@ -31,7 +31,6 @@ function FriendSearchForm({ setFriendSearchResult }) {
 		try {
 			const response = await api.get(`/user/search/${searchUsername}`);
 			const { user } = response.data;
-			console.log(user);
 			setFriendSearchResult([user]);
 		} catch (err) {
 			if (err.response?.status === 400) {

@@ -1,5 +1,6 @@
 div.content {
 	height: 100vh;
+	background-color: var(--mediumBrown);
 }
 
 div.centerContent {
@@ -21,6 +22,7 @@ div.input {
 	padding: 20px;
 	width: 100%;
 	max-width: 500px;
+	background-color: var(--lightGray);
 }
 
 div.banner {
