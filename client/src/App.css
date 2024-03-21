@@ -3,6 +3,7 @@
 }
 
 :root {
+	--darkestGray: rgb(75, 75, 75);
 	--darkGray: #9b968e;
 	--lightGray: #d9d4d4;
 	--darkBrown: #70644c;
