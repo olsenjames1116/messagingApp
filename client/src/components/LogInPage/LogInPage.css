@@ -13,6 +13,7 @@ div.centerContent {
 div.title {
 	font-size: 2rem;
 	margin-top: 100px;
+	font-family: 'greekFreak', sans-serif;
 }
 
 div.input {
@@ -23,6 +24,7 @@ div.input {
 	width: 100%;
 	max-width: 500px;
 	background-color: var(--lightGray);
+	box-shadow: 0 0 5px var(--darkBrown);
 }
 
 div.banner {
@@ -62,6 +64,7 @@ div.options {
 		background-color: var(--darkestGray);
 		color: white;
 		border-radius: 4px;
+		padding: 10px;
 
 		&&:hover,
 		&&:focus {

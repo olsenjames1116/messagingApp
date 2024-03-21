@@ -5,6 +5,7 @@ header {
 	align-items: center;
 	padding: 10px;
 	background-color: var(--lightGray);
+	outline: 1px solid var(--lightBrown);
 
 	&& > a {
 		text-decoration: none;

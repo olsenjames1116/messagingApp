@@ -2,6 +2,7 @@
 	grid-area: 1 / 1 / 4 / 2;
 	height: 100vh;
 	background-color: var(--lightGray);
+	outline: 1px solid var(--lightBrown);
 
 	&& > ul {
 		display: flex;

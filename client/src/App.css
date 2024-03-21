@@ -1,7 +1,3 @@
-* {
-	outline: 1px solid black;
-}
-
 :root {
 	--darkestGray: rgb(75, 75, 75);
 	--darkGray: #9b968e;
@@ -11,10 +7,18 @@
 	--lightBrown: #f0ede7;
 }
 
+@font-face {
+	font-family: 'greekFreak';
+	src: url('./assets/fonts/greek-freak-webfont.woff2') format('woff2'),
+		url('./assets/fonts/greek-freak-webfont.woff') format('woff');
+}
+
 div#root {
 	height: 100vh;
 	display: grid;
 	grid-template-rows: 1fr auto;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+		'Lucida Sans', Arial, sans-serif;
 }
 
 body {

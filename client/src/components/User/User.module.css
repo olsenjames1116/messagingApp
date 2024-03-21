@@ -3,6 +3,11 @@
 	align-items: center;
 	gap: 10px;
 	font-size: 1.2rem;
+
+	&&:hover,
+	&&:focus {
+		filter: contrast(0.5);
+	}
 }
 
 @media (max-width: 760px) {

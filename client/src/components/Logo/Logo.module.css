@@ -4,6 +4,7 @@
 	font-size: 2rem;
 	gap: 10px;
 	transition: 1s transform;
+	font-family: 'greekFreak', sans-serif;
 
 	&&:hover,
 	&&:focus {

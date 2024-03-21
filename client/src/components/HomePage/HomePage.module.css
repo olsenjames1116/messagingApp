@@ -13,6 +13,7 @@
 .content {
 	height: 75%;
 	width: 75%;
+	box-shadow: 0 0 5px var(--darkBrown);
 }
 
 @media (max-width: 760px) {

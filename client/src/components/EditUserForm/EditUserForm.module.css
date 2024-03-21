@@ -9,6 +9,22 @@
 		resize: none;
 		width: 50%;
 		font-size: 1.2rem;
+		background-color: var(--mediumBrown);
+	}
+
+	&& > button {
+		background-color: var(--darkBrown);
+		color: var(--lightBrown);
+		border: 0;
+		border-radius: 4px;
+		font-size: 1.2rem;
+		padding-left: 10px;
+		padding-right: 10px;
+
+		&&:hover,
+		&&:focus {
+			filter: contrast(0.8);
+		}
 	}
 }
 
@@ -29,6 +45,11 @@
 		&& > img {
 			width: 40px;
 			height: 40px;
+
+			&&:hover,
+			&&:focus {
+				filter: contrast(0.5);
+			}
 		}
 	}
 }

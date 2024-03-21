@@ -4,4 +4,11 @@
 	align-items: center;
 	gap: 5px;
 	padding: 3px;
+	outline: 1px solid var(--lightBrown);
+	border-radius: 10px;
+
+	&&:hover,
+	&&:focus {
+		filter: contrast(0.8);
+	}
 }
