@@ -1,13 +1,28 @@
 .messageForm {
 	display: flex;
 	flex-direction: column;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
 
 	&& > textarea {
 		resize: none;
 		height: 50px;
+		background-color: var(--lightGray);
 	}
 
 	&& > button {
 		align-self: center;
+		background-color: var(--darkBrown);
+		color: var(--lightBrown);
+		width: 30%;
+		border: 0;
+		border-radius: 4px;
+		font-size: 1rem;
+
+		&&:hover,
+		&&:focus {
+			filter: contrast(0.8);
+		}
 	}
 }

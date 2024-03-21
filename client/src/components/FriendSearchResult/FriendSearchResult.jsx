@@ -60,7 +60,7 @@ function FriendSearchResult({ friendSearchResult }) {
 								<button disabled>Already Added</button>
 							) : (
 								<button onClick={(event) => handleClick(event, result)}>
-									Add Friend
+									+Add Friend
 								</button>
 							)
 						}

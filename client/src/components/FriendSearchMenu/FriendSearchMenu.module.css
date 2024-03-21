@@ -10,12 +10,18 @@
 	animation: 0.3s ease-in slideIn;
 	display: flex;
 	flex-direction: column;
+	background-color: var(--lightGray);
 
 	&& > img {
 		height: 30px;
 		width: 30px;
 		align-self: flex-end;
 		margin-bottom: 10px;
+
+		&&:hover,
+		&&:focus {
+			filter: contrast(0);
+		}
 	}
 }
 

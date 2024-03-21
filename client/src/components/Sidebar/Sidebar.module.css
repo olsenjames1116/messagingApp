@@ -1,6 +1,7 @@
 .sidebar {
 	grid-area: 1 / 1 / 4 / 2;
 	height: 100vh;
+	background-color: var(--lightGray);
 
 	&& > ul {
 		display: flex;
@@ -17,4 +18,17 @@
 .buttonContainer {
 	display: flex;
 	justify-content: center;
+
+	&& > button {
+		border: 0;
+		border-radius: 4px;
+		background-color: var(--darkBrown);
+		color: var(--lightBrown);
+		font-size: 1rem;
+
+		&&:hover,
+		&&:focus {
+			filter: contrast(0.8);
+		}
+	}
 }

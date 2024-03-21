@@ -17,12 +17,12 @@
 
 .fromUser {
 	align-self: flex-end;
-	background-color: rgb(23, 120, 231);
+	background-color: var(--darkBrown);
 	color: white;
 }
 
 .toUser {
 	align-self: flex-start;
-	background-color: rgb(75, 75, 75);
+	background-color: var(--darkestGray);
 	color: white;
 }

@@ -16,7 +16,7 @@ function Sidebar({ setDisplayMenu }) {
 		<section className={styles.sidebar}>
 			<ul>
 				<li className={styles.buttonContainer} key={1}>
-					<button onClick={handleClick}>Add Friend</button>
+					<button onClick={handleClick}>+Add Friend</button>
 				</li>
 				<FriendList />
 			</ul>

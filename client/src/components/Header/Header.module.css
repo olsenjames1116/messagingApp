@@ -4,6 +4,7 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	padding: 10px;
+	background-color: var(--lightGray);
 
 	&& > a {
 		text-decoration: none;
