@@ -51,30 +51,26 @@ exports.messagePost =
 				sort: { timestamp: 1 },
 			});
 
-			req.user.messages = [...messages];
-
 			res.status(200).json({
 				messages: messages,
 			});
 		}
 	});
 
-// Retrieve all the messages between the user and the specified one fron the db.
+// Retrieve all the messages between the user and the specified one from the db.
 exports.messagesGet = asyncHandler(async (req, res, next) => {
-	const { messages } = req.user;
-	const { id } = req.params;
+	const from = req.user._id;
+	const to = req.params.id;
 
-	// Get all the messages that are sent and received from the currently selected friend.
-	const messagesBetweenUsers = messages.filter(
-		(message) => message.to === id || message.from === id
-	);
-
-	// Sort all messages between users by timestamp with oldest first.
-	const sortedMessages = messagesBetweenUsers.sort(
-		(a, b) => a.timestamp - b.timestamp
-	);
+	/* Get all the messages that are sent and received from the currently selected friend.
+		Then, sort all messages between users by timestamp with oldest first. */
+	const { messages } = await User.findById(from).populate({
+		path: 'messages',
+		match: { $or: [{ to: to }, { from: to }] },
+		sort: { timestamp: 1 },
+	});
 
 	res.status(200).json({
-		messages: sortedMessages,
+		messages: messages,
 	});
 });
