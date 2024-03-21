@@ -14,6 +14,7 @@ const usersRouter = require('./routes/users');
 const messagesRouter = require('./routes/messages');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Apply rate limit to all requests.
 const limiter = rateLimit({
