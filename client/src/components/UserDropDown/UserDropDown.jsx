@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import LogOut from '../Logout/LogOut';
+import LogOut from '../LogOut/LogOut';
 import { Link } from 'react-router-dom';
 import styles from './UserDropDown.module.css';
 
