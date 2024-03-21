@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../../axiosConfig';
 import { updateFriends } from '../../redux/state/userSlice';
+import styles from './FriendSearchResult.module.css';
 
 // Represents the result returned from searching for friends.
 function FriendSearchResult({ friendSearchResult }) {
@@ -45,11 +46,11 @@ function FriendSearchResult({ friendSearchResult }) {
 	};
 
 	return (
-		<ul>
+		<ul className={styles.results}>
 			{
 				// For each result, display their name and profile picture.
 				friendSearchResult?.map((result) => (
-					<li key={result._id}>
+					<li className={styles.result} key={result._id}>
 						<img src={result.profilePic} />
 						<span>{result.username}</span>
 						{

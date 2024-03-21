@@ -5,7 +5,7 @@
 
 .input {
 	display: flex;
-	gap: 5px;
+	justify-content: space-between;
 
 	&& > label {
 		display: flex;

@@ -4,7 +4,6 @@ import { useRef, useEffect } from 'react';
 
 // Represents the messages between users displayed in the chat box.
 function Messages() {
-	const lastElementRef = useRef(null);
 	const messagesRef = useRef(null);
 
 	const messagesBetweenUsers = useSelector(
@@ -13,11 +12,8 @@ function Messages() {
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
-		messagesRef.current.scrollTo({
-			top: messagesRef.current.scrollHeight,
-			left: 0,
-		});
-	}, []);
+		messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight);
+	});
 
 	return (
 		<ul className={styles.messages} ref={messagesRef}>
@@ -48,7 +44,6 @@ function Messages() {
 						}
 					})
 			}
-			<li ref={lastElementRef} />
 		</ul>
 	);
 }

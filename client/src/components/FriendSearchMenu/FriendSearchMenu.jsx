@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import FriendSearchForm from '../FriendSearchForm/FriendSearchForm';
 import FriendSearchResult from '../FriendSearchResult/FriendSearchResult';
+import { closeImage } from '../../assets/images';
 import styles from './FriendSearchMenu.module.css';
 
 // Represents the menu to search for users.
@@ -20,6 +21,7 @@ function FriendSearchMenu({ displayMenu, setDisplayMenu, menuRef }) {
 
 	return (
 		<section className={styles.menu} ref={menuRef}>
+			<img src={closeImage} onClick={() => setDisplayMenu(false)} alt="" />
 			<FriendSearchForm setFriendSearchResult={setFriendSearchResult} />
 			<FriendSearchResult friendSearchResult={friendSearchResult} />
 		</section>
