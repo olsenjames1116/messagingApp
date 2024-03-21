@@ -59,6 +59,7 @@ exports.messagePost =
 
 // Retrieve all the messages between the user and the specified one from the db.
 exports.messagesGet = asyncHandler(async (req, res, next) => {
+	// Retrieve the id for the author and recipient of the messages.
 	const from = req.user._id;
 	const to = req.params.id;
 

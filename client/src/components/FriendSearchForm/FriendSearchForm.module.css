@@ -1,0 +1,13 @@
+.form {
+	display: flex;
+	flex-direction: column;
+}
+
+.input {
+	display: flex;
+	gap: 5px;
+
+	&& > label {
+		display: flex;
+	}
+}

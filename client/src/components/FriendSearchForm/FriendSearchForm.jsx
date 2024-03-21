@@ -3,6 +3,7 @@ import { searchImage } from '../../assets/images';
 import api from '../../axiosConfig';
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import styles from './FriendSearchForm.module.css';
 
 // Represents the form to search for users.
 function FriendSearchForm({ setFriendSearchResult }) {
@@ -69,19 +70,26 @@ function FriendSearchForm({ setFriendSearchResult }) {
 	};
 
 	return (
-		<form method="GET" action="" onSubmit={handleSubmit}>
-			<label htmlFor="user">
-				<img src={searchImage} />
-			</label>
-			<input
-				type="text"
-				name="user"
-				id="user"
-				placeholder="Search for user..."
-				onChange={handleChange}
-				ref={inputRef}
-			/>
-			<button>Submit</button>
+		<form
+			className={styles.form}
+			method="GET"
+			action=""
+			onSubmit={handleSubmit}
+		>
+			<div className={styles.input}>
+				<label htmlFor="user">
+					<img src={searchImage} />
+				</label>
+				<input
+					type="text"
+					name="user"
+					id="user"
+					placeholder="Search for user..."
+					onChange={handleChange}
+					ref={inputRef}
+				/>
+				<button>Submit</button>
+			</div>
 			<InputMessages
 				messages={inputMessages}
 				inputMessagesRef={inputMessagesRef}

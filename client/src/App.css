@@ -2,6 +2,14 @@
 	outline: 1px solid black;
 }
 
+:root {
+	--darkGray: #9b968e;
+	--lightGray: #d9d4d4;
+	--darkBrown: #70644c;
+	--mediumBrown: #dcd3c9;
+	--lightBrown: #f0ede7;
+}
+
 div#root {
 	height: 100vh;
 	display: grid;
