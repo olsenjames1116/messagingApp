@@ -28,3 +28,5 @@ This project highlights:
 - Redux
 - MVC architecture
 - CRUD operations
+
+© 2024 James Olsen. All Rights Reserved.
